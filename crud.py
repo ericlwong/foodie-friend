@@ -31,6 +31,16 @@ def create_restaurant(name, rating, street_address, city,
     
     return restaurant
 
+def get_restaurants():
+    """Get all restaurants."""
+
+    return Restaurant.query.all()
+
+def get_restaurant_by_id(restaurant_id):
+    """Get a restaurant by id."""
+
+    return Restaurant.query.get(restaurant_id)
+
 def create_yelp_review(restaurant, body, rating):
     """Create and return a new Yelp Review."""
 

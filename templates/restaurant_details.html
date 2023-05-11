@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ restaurant.name }} - Details{% endblock %}
+
+{% block body %}
+  <h1>{{ restaurant.name }}</h1>
+
+  <p>
+    Rating: {{ restaurant.rating }}
+  </p>
+  <p>
+    {{ restaurant.street_address }}
+  </p>
+  <p>
+    {{ restaurant.city }}, {{ restaurant.state }} {{ restaurant.zipcode }}
+  </p>
+
+  {% if restaurant.phone_number %}
+    <p>
+      Phone Number: {{ restaurant.phone_number }}
+    </p>
+  {% endif %}
+
+  <p>
+    {{ restaurant.business_hours }}
+  </p>
+
+  <h2>{{ restaurant.name }} - Images</h2>
+
+  {% for image in images %}
+    <img src="{{ image.img_url }}">
+  {% endfor %}
+
+  <h2>{{ restaurant.name }} - Reviews</h2>
+  <ul>
+    {% for yelp_review in yelp_reviews %}
+      <li>
+        <p>Rating: {{ yelp_review.rating }}</p>
+        <p>
+          {{ yelp_review.body }}
+        </p>
+      </li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}

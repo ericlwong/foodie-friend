@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Foodie Friend Home{% endblock %}
+
+{% block body %}
+  <h1>Welcome!</h1>
+
+  <div class="search">
+    <input id="search-input" type="text" placeholder="Search for restaurants, food, etc...">
+    <button class="search-btn" id="search">Search</button>
+  </div>
+
+  <h2>Navigation</h2>
+  <ul>
+    <li><a href="/restaurants">View all restaurants</a></li>
+    <li><a href="/users">View all users</a></li>
+  </ul>
+{% endblock %}
