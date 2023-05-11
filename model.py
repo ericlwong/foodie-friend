@@ -1,6 +1,7 @@
 """Models for Foodie Friend app."""
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_json import mutable_json_type
 
 db = SQLAlchemy()
 
@@ -11,9 +12,9 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(50), nullable=False, unique=True)
     fname = db.Column(db.String(30), nullable=False)
     lname = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=True, default=None)
@@ -40,10 +41,10 @@ class Restaurant(db.Model):
     city = db.Column(db.String, nullable=False)
     state = db.Column(db.String(2), nullable=False)
     zipcode = db.Column(db.String(10), nullable=False)
-    phone_number = db.Column(db.String(10))
-    business_hours = db.Column(db.String)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
+    phone_number = db.Column(db.String(12), nullable=True)
+    business_hours = db.Column(mutable_json_type(dbtype=db.JSON, nested=True), nullable=True)
 
     yelp_reviews = db.relationship("YelpReview", back_populates="restaurant")
     user_reviews = db.relationship("UserReview", back_populates="restaurant")
@@ -80,8 +81,8 @@ class UserReview(db.Model):
     __tablename__ = "user_reviews"
 
     user_review_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"), nullable=False)
     body = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
 
@@ -123,7 +124,7 @@ class UserFavoritesList(db.Model):
     updated_at = db.Column(db.DateTime, nullable=True, default=None)
 
     user = db.relationship("User", back_populates = "favorites_lists")
-    favorites = db.relationship("Favorite", back_populates = "favorites_list")
+    favorites = db.relationship("Favorite", back_populates = "user_favorites_list")
 
     def __repr__(self):
         """Show info about user's favorites list."""
@@ -137,14 +138,14 @@ class Favorite(db.Model):
     __tablename__ = "favorites"
 
     favorite_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"), nullable=False)
-    favorites_list_id = db.Column(db.Integer, db.ForeignKey("user_favorites_lists.list_id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    user_favorites_list_id = db.Column(db.Integer, db.ForeignKey("user_favorites_lists.list_id"), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
 
     restaurant = db.relationship("Restaurant", back_populates="favorites")
     user = db.relationship("User", back_populates="favorites")
-    favorites_list = db.relationship("UserFavoritesList", back_populates="favorites")
+    user_favorites_list = db.relationship("UserFavoritesList", back_populates="favorites")
 
     def __repr__(self):
         """Show info about user-favorited restaurant."""
