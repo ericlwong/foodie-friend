@@ -45,6 +45,7 @@ class Restaurant(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     phone_number = db.Column(db.String(12), nullable=True)
     business_hours = db.Column(mutable_json_type(dbtype=db.JSON, nested=True), nullable=True)
+    categories = db.Column(mutable_json_type(dbtype=db.JSON, nested=True), nullable=False)
 
     yelp_reviews = db.relationship("YelpReview", back_populates="restaurant")
     user_reviews = db.relationship("UserReview", back_populates="restaurant")
@@ -66,6 +67,7 @@ class YelpReview(db.Model):
     restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"), nullable=False)
     body = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
+    review_url = db.Column(db.String, nullable=False)
 
     restaurant = db.relationship("Restaurant", back_populates="yelp_reviews")
 
