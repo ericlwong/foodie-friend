@@ -2,6 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_json import mutable_json_type
+from sqlalchemy.dialects.postgresql import JSONB
 
 db = SQLAlchemy()
 
@@ -44,8 +45,8 @@ class Restaurant(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     phone_number = db.Column(db.String(12), nullable=True)
-    business_hours = db.Column(mutable_json_type(dbtype=db.JSON, nested=True), nullable=True)
-    categories = db.Column(mutable_json_type(dbtype=db.JSON, nested=True), nullable=False)
+    business_hours = db.Column(mutable_json_type(dbtype=JSONB, nested=True), nullable=True)
+    categories = db.Column(mutable_json_type(dbtype=JSONB, nested=True), nullable=False)
 
     yelp_reviews = db.relationship("YelpReview", back_populates="restaurant")
     user_reviews = db.relationship("UserReview", back_populates="restaurant")

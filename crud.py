@@ -12,8 +12,13 @@ def create_user(fname, lname, email, password):
 
     return user
 
-def create_restaurant(name, rating, street_address, city, 
-                      state, zipcode, latitude, longitude,
+def get_user_by_email(email):
+    """Get a user by email."""
+
+    return User.query.filter(User.email == email).first()
+
+def create_restaurant(name, rating, street_address, city, state, 
+                      zipcode, latitude, longitude, categories,
                       phone_number=None, business_hours=None):
     """Create and return a new Restaurant."""
 
@@ -26,6 +31,7 @@ def create_restaurant(name, rating, street_address, city,
                     zipcode=zipcode,
                     latitude=latitude,
                     longitude=longitude, 
+                    categories=categories,
                     phone_number=phone_number, 
                     business_hours=business_hours)
     
@@ -41,11 +47,25 @@ def get_restaurant_by_id(restaurant_id):
 
     return Restaurant.query.get(restaurant_id)
 
-def create_yelp_review(restaurant, body, rating):
+def get_restaurants_by_term_location(search_term, location):
+    """Get all restaurants best matching the search term and location."""
+
+    restaurants = Restaurant.query.filter(
+        (Restaurant.city == location) & (
+        (db.func.lower(Restaurant.name).like(f"%{search_term}%")) | (Restaurant.categories.has_key(search_term))
+        )).all()
+
+    # for restaurant in restaurants:
+    #     if search_term in restaurant.categories:
+    #         matched_restaurants.add(restaurant
+    #                                 )    
+    return restaurants
+
+def create_yelp_review(restaurant, body, rating, review_url):
     """Create and return a new Yelp Review."""
 
-    yelp_review = YelpReview(restaurant=restaurant, 
-                             body=body, rating=rating)
+    yelp_review = YelpReview(restaurant=restaurant, body=body, 
+                             rating=rating, review_url=review_url)
     
     return yelp_review
 
