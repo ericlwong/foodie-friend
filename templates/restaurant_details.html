@@ -21,9 +21,24 @@
     </p>
   {% endif %}
 
-  <p>
-    {{ restaurant.business_hours }}
-  </p>
+  {% if restaurant.business_hours %}
+    <h3>Business Hours</h3>
+
+    <ul>
+        {% for day in restaurant.business_hours %}
+          <li>  
+          <p>{{ day }}</p>
+          {% if restaurant.business_hours[day] %} 
+            {% for hours in restaurant.business_hours[day] %}
+              <p>{{ hours }}</p>
+            {% endfor %}
+          {% else %}
+            <p>Closed</p>
+          {% endif %}
+          </li>
+        {% endfor %}   
+    </ul>
+  {% endif %}
 
   <h2>{{ restaurant.name }} - Images</h2>
 
@@ -39,6 +54,9 @@
         <p>
           {{ yelp_review.body }}
         </p>
+        <a href="{{ yelp_review.review_url }}" target="_blank" rel="noopener noreferrer">
+          See more
+        </a>
       </li>
     {% endfor %}
   </ul>

@@ -17,6 +17,29 @@ def show_homepage():
 
     return render_template("homepage.html")
 
+@app.route("/login")
+def show_login():
+    """View login page."""
+
+    return render_template("login.html")
+
+@app.route("/login", methods=["POST"])
+def handle_login():
+    """Log user into account."""
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = crud.get_user_by_email(email)
+
+    if user and user.email == email and user.password == password:
+        session["user"] = email
+        flash("Login successful!")
+        return redirect("/")
+    else:
+        flash("Incorrect email and password. Please try again.")
+        return redirect("/login")
+
 @app.route("/restaurants")
 def show_restaurants():
     """View restaurants."""
@@ -35,6 +58,17 @@ def show_restaurant(restaurant_id):
 
     return render_template("restaurant_details.html", restaurant=restaurant, 
                            yelp_reviews=yelp_reviews, images=images)
+
+@app.route("/search")
+def search_restaurants():
+    """Search for restaurants."""
+
+    query = request.args.get("query")
+    location = request.args.get("location")
+
+    restaurants = crud.get_restaurants_by_term_location(query, location)
+
+    return render_template("searched_restaurants.html", restaurants=restaurants, location=location)
 
 if __name__ == "__main__":
     connect_to_db(app)

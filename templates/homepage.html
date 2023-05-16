@@ -3,16 +3,21 @@
 {% block title %}Foodie Friend Home{% endblock %}
 
 {% block body %}
-  <h1>Welcome!</h1>
-
-  <div class="search">
-    <input id="search-input" type="text" placeholder="Search for restaurants, food, etc...">
-    <button class="search-btn" id="search">Search</button>
+  <div class="row text-center">
+    <h1>Find your next amazing eats!</h1>
   </div>
-
-  <h2>Navigation</h2>
-  <ul>
-    <li><a href="/restaurants">View all restaurants</a></li>
-    <li><a href="/users">View all users</a></li>
-  </ul>
+  
+  <div class="d-flex flex-row justify-content-center">
+    <form class="d-flex" action="/search">
+      <div class="col-6 me-2">
+        <input class="form-control" id="search-input" type="text" name="query" placeholder="Restaurants, food, etc." aria-label="Query Search">
+      </div>
+      <div class="col me-2">
+        <input class="form-control" id="location-input" type="text" name="location" placeholder="Location" aria-label="Location Search">
+      </div>
+      <div class="col-2">
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+    </form>
+  </div>
 {% endblock %}
