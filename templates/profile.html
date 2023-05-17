@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.fname }}'s Profile{% endblock %}
+
+{% block body %}
+  <div class="d-flex flex-row justify-content-between align-items-center">
+    <h1>Hi, {{ user.fname }}.</h1>
+    <div>
+      <a class="btn btn-primary" href="/users/<user_id>/edit" role="button">Edit Profile</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2>My Lists</h2>
+    <ul>
+      {% for list in user.favorites_lists %}
+        <li><a href="/users/<user_id>/lists/{{ list.list_id }}">{{ list.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+{% endblock %}

@@ -26,6 +26,11 @@ def get_users():
 
     return User.query.all()
 
+def get_user_by_id(user_id):
+    """Get a user by id."""
+
+    return User.query.get(user_id)
+
 def get_user_by_email(email):
     """Get a user by email."""
 

@@ -100,6 +100,18 @@ def show_users():
 
     return render_template("all_users.html", users=users, user=is_logged_in())
 
+@app.route("/users/<user_id>")
+def show_user_profile(user_id):
+    """View a particular user's profile."""
+
+    user = crud.get_user_by_id(user_id)
+
+    # Can only access the logged-in user's profile
+    if "user" in session and user.email == session["user"]:
+        return render_template("profile.html", user=user)
+    else:
+        return redirect("/")
+
 @app.route("/restaurants")
 def show_restaurants():
     """View restaurants."""
