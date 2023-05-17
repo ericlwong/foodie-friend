@@ -3,62 +3,76 @@
 {% block title %}{{ restaurant.name }} - Details{% endblock %}
 
 {% block body %}
-  <h1>{{ restaurant.name }}</h1>
-
-  <p>
-    Rating: {{ restaurant.rating }}
-  </p>
-  <p>
-    {{ restaurant.street_address }}
-  </p>
-  <p>
-    {{ restaurant.city }}, {{ restaurant.state }} {{ restaurant.zipcode }}
-  </p>
-
-  {% if restaurant.phone_number %}
+  <div class="row">
+    <h1>{{ restaurant.name }}</h1>
+  </div>
+  
+  <div class="row">
     <p>
-      Phone Number: {{ restaurant.phone_number }}
+      Rating: {{ restaurant.rating }}
     </p>
-  {% endif %}
-
-  {% if restaurant.business_hours %}
-    <h3>Business Hours</h3>
-
-    <ul>
-        {% for day in restaurant.business_hours %}
-          <li>  
-          <p>{{ day }}</p>
-          {% if restaurant.business_hours[day] %} 
-            {% for hours in restaurant.business_hours[day] %}
-              <p>{{ hours }}</p>
-            {% endfor %}
-          {% else %}
-            <p>Closed</p>
-          {% endif %}
-          </li>
-        {% endfor %}   
-    </ul>
-  {% endif %}
-
-  <h2>{{ restaurant.name }} - Images</h2>
-
-  {% for image in images %}
-    <img src="{{ image.img_url }}">
-  {% endfor %}
-
-  <h2>{{ restaurant.name }} - Reviews</h2>
-  <ul>
-    {% for yelp_review in yelp_reviews %}
-      <li>
-        <p>Rating: {{ yelp_review.rating }}</p>
-        <p>
-          {{ yelp_review.body }}
-        </p>
-        <a href="{{ yelp_review.review_url }}" target="_blank" rel="noopener noreferrer">
-          See more
-        </a>
-      </li>
+    <p>
+      {{ restaurant.street_address }}
+    </p>
+    <p>
+      {{ restaurant.city }}, {{ restaurant.state }} {{ restaurant.zipcode }}
+    </p>
+  
+    {% if restaurant.phone_number %}
+      <p>
+        Phone Number: {{ restaurant.phone_number }}
+      </p>
+    {% endif %}
+  
+    {% if restaurant.business_hours %}
+      <h3>Business Hours</h3>
+  
+      <ul>
+          {% for day in restaurant.business_hours %}
+            <li>  
+            <p>{{ day }}</p>
+            {% if restaurant.business_hours[day] %} 
+              {% for hours in restaurant.business_hours[day] %}
+                <p>{{ hours }}</p>
+              {% endfor %}
+            {% else %}
+              <p>Closed</p>
+            {% endif %}
+            </li>
+          {% endfor %}   
+      </ul>
+    {% endif %}
+  </div>
+  
+  <div class="row">
+    <h2>{{ restaurant.name }} - Images</h2>
+  </div>
+  
+  <div class="d-flex flex-row">
+    {% for image in images %}
+      <div class="col">
+        <img class="img-responsive img-thumbnail" src="{{ image.img_url }}">
+      </div> 
     {% endfor %}
-  </ul>
+  </div>
 
+  <div class="row">
+    <h2>{{ restaurant.name }} - Reviews</h2>
+  </div>
+  
+  <div class="row">
+    <ul>
+      {% for yelp_review in yelp_reviews %}
+        <li>
+          <p>Rating: {{ yelp_review.rating }}</p>
+          <p>
+            {{ yelp_review.body }}
+          </p>
+          <a href="{{ yelp_review.review_url }}" target="_blank" rel="noopener noreferrer">
+            See more
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 {% endblock %}

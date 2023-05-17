@@ -17,6 +17,11 @@ class User(db.Model):
     lname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
+    address = db.Column(db.String, nullable=False)
+    address_2 = db.Column(db.String, nullable=True)
+    city = db.Column(db.String, nullable=False)
+    state = db.Column(db.String(2), nullable=False)
+    zipcode = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=True, default=None)
 

@@ -126,7 +126,8 @@ for n in range(10):
     email = f"test{n}@test.com"
     password = "test"
 
-    user = crud.create_user(fname, lname, email, password)
+    user = crud.create_user(fname, lname, email, password, 
+                            "San Francisco", "CA", "94102", "1234 Main St.")
 
     # Create a Favorites List for each user
     list_name = f"{fname}'s List"

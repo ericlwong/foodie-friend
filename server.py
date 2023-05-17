@@ -3,6 +3,7 @@
 from flask import Flask, render_template, request, flash, session, redirect
 from model import connect_to_db, db
 from jinja2 import StrictUndefined
+from utils import STATES, is_logged_in
 import crud
 
 app = Flask(__name__)
@@ -10,12 +11,11 @@ app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 app.app_context().push()
 
-
 @app.route("/")
 def show_homepage():
     """View homepage."""
 
-    return render_template("homepage.html")
+    return render_template("homepage.html", user=is_logged_in())
 
 @app.route("/login")
 def show_login():
@@ -35,10 +35,70 @@ def handle_login():
     if user and user.email == email and user.password == password:
         session["user"] = email
         flash("Login successful!")
+
         return redirect("/")
     else:
         flash("Incorrect email and password. Please try again.")
+
         return redirect("/login")
+    
+@app.route("/signup")
+def show_signup():
+    """View sign up page."""
+
+    return render_template("signup.html", states=STATES)
+
+@app.route("/signup", methods=["POST"])
+def create_account():
+    """Create a new user account."""
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+    fname = request.form.get("fname")
+    lname = request.form.get("lname")
+    address = request.form.get("address")
+    address_2 = request.form.get("address-2")
+    city = request.form.get("city")
+    state = request.form.get("state")
+    zipcode = request.form.get("zipcode")
+
+    user = crud.get_user_by_email(email)
+
+    if user:
+        flash("Email already in use. Please use another one or log in with existing email.")
+
+        return redirect("/signup")
+    else:
+        new_user = crud.create_user(fname, lname, email, password, city, 
+                                state, zipcode, address, address_2)
+        
+        db.session.add(new_user)
+        db.session.commit()
+
+        session["user"] = email
+        flash("Account created and logged in!")
+
+        return redirect("/")
+    
+@app.route("/logout")
+def handle_logout():
+    """Log user out of account."""
+
+    if "user" in session:
+        del session["user"]
+        flash("Logged out successfully!") 
+    else:
+        flash("You are not currently logged in.")
+
+    return redirect("/")
+
+@app.route("/users")
+def show_users():
+    """View users."""
+
+    users = crud.get_users()
+
+    return render_template("all_users.html", users=users, user=is_logged_in())
 
 @app.route("/restaurants")
 def show_restaurants():
@@ -46,7 +106,7 @@ def show_restaurants():
 
     restaurants = crud.get_restaurants()
 
-    return render_template("all_restaurants.html", restaurants=restaurants)
+    return render_template("all_restaurants.html", restaurants=restaurants, user=is_logged_in())
 
 @app.route("/restaurants/<restaurant_id>")
 def show_restaurant(restaurant_id):
@@ -57,7 +117,7 @@ def show_restaurant(restaurant_id):
     images = restaurant.images
 
     return render_template("restaurant_details.html", restaurant=restaurant, 
-                           yelp_reviews=yelp_reviews, images=images)
+                        yelp_reviews=yelp_reviews, images=images, user=is_logged_in())
 
 @app.route("/search")
 def search_restaurants():
@@ -68,7 +128,8 @@ def search_restaurants():
 
     restaurants = crud.get_restaurants_by_term_location(query, location)
 
-    return render_template("searched_restaurants.html", restaurants=restaurants, location=location)
+    return render_template("searched_restaurants.html", restaurants=restaurants, 
+                           location=location, user=is_logged_in())
 
 if __name__ == "__main__":
     connect_to_db(app)

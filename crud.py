@@ -4,13 +4,27 @@ from model import (db, User, Restaurant, YelpReview, UserReview,
                    Image, UserFavoritesList, Favorite, connect_to_db)
 from datetime import datetime
 
-def create_user(fname, lname, email, password):
+def create_user(fname, lname, email, password, city, 
+                state, zipcode, address, address_2=None):
     """Create and return a new User."""
 
-    user = User(fname=fname, lname=lname, email=email, 
-                password=password, created_at=datetime.now())
+    user = User(fname=fname, 
+                lname=lname, 
+                email=email, 
+                password=password, 
+                address=address, 
+                address_2=address_2, 
+                city=city, 
+                state=state, 
+                zipcode=zipcode, 
+                created_at=datetime.now())
 
     return user
+
+def get_users():
+    """Get all users."""
+
+    return User.query.all()
 
 def get_user_by_email(email):
     """Get a user by email."""
