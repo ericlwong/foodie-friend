@@ -6,48 +6,14 @@ import requests
 import crud
 import model
 import server
+import utils
 from random import choice, randint
-from datetime import datetime
 
 os.system("dropdb foodies")
 os.system("createdb foodies")
 
 model.connect_to_db(server.app)
 model.db.create_all()
-
-def convert_time_string(time_str):
-    """Convert and return time as 12-Hour Format."""
-
-    time_12_hr = datetime.strptime(time_str, "%H%M")
-    return time_12_hr.strftime("%I:%M %p")
-
-def clean_business_hours(yelp_business_hours):
-    """Clean and return dictionary of business hours."""
-
-    if yelp_business_hours is None:
-        return {}
-
-    cleaned_business_hours = {
-        "Monday": [],
-        "Tuesday": [],
-        "Wednesday": [],
-        "Thursday": [],
-        "Friday": [],
-        "Saturday": [],
-        "Sunday": []
-    }
-
-    week_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    open_hours_dict = yelp_business_hours[0]["open"]
-
-    for day in open_hours_dict:
-        day_idx = day["day"]
-        start_time = convert_time_string(day["start"])
-        end_time = convert_time_string(day["end"])
-        
-        cleaned_business_hours[week_days[day_idx]].append(f"{start_time} - {end_time}")
-    
-    return cleaned_business_hours
 
 # Make initial request to Yelp Business Search endpoint
 headers = {
@@ -87,7 +53,7 @@ for business in businesses:
     business_res = requests.get(f"https://api.yelp.com/v3/businesses/{business_id}", headers=headers)
     business_data = business_res.json()
 
-    business_hours = clean_business_hours(business_data.get("hours", None))
+    business_hours = utils.clean_business_hours(business_data.get("hours", None))
     images = business_data["photos"]
 
     restaurant = crud.create_restaurant(name, rating, street_address, city, state, zipcode, latitude, 
