@@ -33,7 +33,7 @@ def handle_login():
     user = crud.get_user_by_email(email)
 
     if user and user.email == email and user.password == password:
-        session["user"] = email
+        session["user"] = user.user_id
         flash("Login successful!")
 
         return redirect("/")
@@ -75,7 +75,7 @@ def create_account():
         db.session.add(new_user)
         db.session.commit()
 
-        session["user"] = email
+        session["user"] = user
         flash("Account created and logged in!")
 
         return redirect("/")
@@ -107,10 +107,25 @@ def show_user_profile(user_id):
     user = crud.get_user_by_id(user_id)
 
     # Can only access the logged-in user's profile
-    if "user" in session and user.email == session["user"]:
+    if "user" in session and user.user_id == session["user"]:
         return render_template("profile.html", user=user, states=utils.STATES)
     else:
         return redirect("/")
+
+@app.route("/users/<user_id>/create-list", methods=["POST"])
+def create_new_favorites_list(user_id):
+    """Create a new Favorites List for a particular user."""
+
+    list_name = request.form.get("list-name")
+    user = crud.get_user_by_id(user_id)
+    favorites_list = crud.create_user_favorites_list(user, list_name)
+
+    db.session.add(favorites_list)
+    db.session.commit()
+
+    flash("A new list has been created successfully!")
+
+    return redirect(f"/users/{user_id}")
 
 @app.route("/restaurants")
 def show_restaurants():
@@ -142,6 +157,46 @@ def search_restaurants():
 
     return render_template("searched_restaurants.html", restaurants=restaurants, 
                            location=location, user=utils.is_logged_in())
+
+@app.route("/update/<user_id>", methods=["POST"])
+def update_user_details(user_id):
+    """Update account details of a particular user."""
+
+    email = request.form.get("email")
+    new_password = request.form.get("password")
+    confirm_password = request.form.get("confirm-password")
+    fname = request.form.get("fname")
+    lname = request.form.get("lname")
+    address = request.form.get("address")
+    address_2 = request.form.get("address_2")
+    city = request.form.get("city")
+    state = request.form.get("state")
+    zipcode = request.form.get("zipcode")
+
+    user = crud.get_user_by_id(user_id)
+
+    crud.set_user_email(user, email)
+    
+    if new_password == confirm_password:
+        crud.set_user_password(user, new_password)
+    else:
+        flash("Passwords do not match. Please try again.")
+        return redirect(f"/users/{user_id}")
+    
+    crud.set_user_fname(user, fname)
+    crud.set_user_lname(user, lname)
+    crud.set_user_address(user, address)
+    crud.set_user_address_2(user, address_2)
+    crud.set_user_city(user, city)
+    crud.set_user_state(user, state)
+    crud.set_user_zipcode(user, zipcode)
+    crud.set_update_at_time(user)
+
+    db.session.commit()
+
+    flash("Account details updated successfully!")
+
+    return redirect(f"/users/{user_id}")
 
 if __name__ == "__main__":
     connect_to_db(app)

@@ -53,6 +53,6 @@ def is_logged_in():
     """Return user or None depending on whether user is in session."""
 
     if "user" in session:
-        return crud.get_user_by_email(session["user"])
+        return crud.get_user_by_id(session["user"])
     else:
         return None

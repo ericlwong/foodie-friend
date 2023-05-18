@@ -36,6 +36,65 @@ def get_user_by_email(email):
 
     return User.query.filter(User.email == email).first()
 
+def set_user_email(user, new_email):
+    """Update a user's email attribute."""
+
+    if new_email and user.email != new_email:
+        user.email = new_email
+
+def set_user_password(user, new_pass):
+    """Update a user's password attribute."""
+
+    if new_pass and user.password != new_pass:
+        user.password = new_pass
+
+def set_user_fname(user, new_fname):
+    """Update a user's first name attribute."""
+
+    if new_fname and user.fname != new_fname:
+        user.fname = new_fname
+
+def set_user_lname(user, new_lname):
+    """Update a user's last name attribute."""
+
+    if new_lname and user.lname != new_lname:
+        user.lname = new_lname
+
+def set_user_address(user, new_addr):
+    """Update a user's address attribute."""
+
+    if new_addr and user.address != new_addr:
+        user.address = new_addr
+
+def set_user_address_2(user, new_addr_2):
+    """Update a user's address_2 attribute."""
+
+    if new_addr_2 and user.address_2 != new_addr_2:
+        user.address_2 = new_addr_2
+
+def set_user_city(user, new_city):
+    """Update a user's city attribute."""
+
+    if new_city and user.city != new_city:
+        user.city = new_city
+
+def set_user_state(user, new_state):
+    """Update a user's state attribute."""
+
+    if new_state and user.state != new_state:
+        user.state = new_state
+
+def set_user_zipcode(user, new_zip):
+    """Update a user's zipcode attribute."""
+
+    if new_zip and user.zipcode != new_zip:
+        user.zipcode = new_zip
+
+def set_update_at_time(user):
+    """Update a user's update_at attribute."""
+
+    user.updated_at = datetime.now()
+
 def create_restaurant(name, rating, street_address, city, state, 
                       zipcode, latitude, longitude, categories,
                       phone_number=None, business_hours=None):
