@@ -3,20 +3,139 @@
 {% block title %}{{ user.fname }}'s Profile{% endblock %}
 
 {% block body %}
-  <div class="d-flex flex-row justify-content-between align-items-center">
-    <h1>Hi, {{ user.fname }}.</h1>
-    <div>
-      <a class="btn btn-primary" href="/users/<user_id>/edit" role="button">Edit Profile</a>
+  <div class="row">
+    <div class="col-4">
+      <div class="card mb-4">
+        <div class="card-header fw-bold">Hello, {{ user.fname }}!</div>
+        <div class="card-body text-center">
+          <img class="img-thumbnail rounded-circle w-50 mb-2" src="/static/images/pineapple.png" alt="profile-picture">
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header">Account Settings</div>
+        <div class="card-body">
+          <div class="list-group" id="account-settings" role="tablist">
+            <a class="list-group-item list-group-item-action active" id="list-profile" data-bs-toggle="list" href="#profile" role="tab" aria-controls="profile">Profile</a>
+            <a class="list-group-item list-group-item-action" id="list-password" data-bs-toggle="list" href="#password" role="tab" aria-controls="password">Change Password</a>
+            <a class="list-group-item list-group-item-action" id="list-favorite-lists" data-bs-toggle="list" href="#lists" role="tab" aria-controls="lists">My Lists</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <ul class="nav nav-tabs mt-4 mb-4" id="account-tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password-tab-pane" type="button" role="tab" aria-controls="password-tab-pane" aria-selected="false">Password</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="lists-tab" data-bs-toggle="tab" data-bs-target="#lists-tab-pane" type="button" role="tab" aria-controls="lists-tab-pane" aria-selected="false">My Lists</button>
+      </li>
+    </ul> -->
+    <div class="col-8">
+      <div class="tab-content" id="account-tabs-content">
+        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="list-profile">
+          <div class="card mb-4">
+            <div class="card-header">Account Details</div>
+            <div class="card-body">
+              <form class="row g-3" action="/update/<user_id>" method="POST">
+                <div class="col-12">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                </div>
+                <div class="col-md-6">
+                  <label for="fname" class="form-label">First Name</label>
+                  <input type="text" class="form-control" id="fname" name="fname" value="{{ user.fname }}">
+                </div>
+                <div class="col-md-6">
+                  <label for="lname" class="form-label">Last Name</label>
+                  <input type="text" class="form-control" id="lname" name="lname" value="{{ user.lname }}">
+                </div>
+                <div class="col-12">
+                  <label for="address" class="form-label">Address</label>
+                  <input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St." value="{{ user.address }}">
+                </div>
+                {% if user.address_2 %}
+                  <div class="col-12">
+                    <label for="address-2" class="form-label">Address 2</label>
+                    <input type="text" class="form-control" id="address-2" name="address-2" placeholder="Apartment, studio, floor" value="{{ user.address_2 }}">
+                  </div>
+                {% endif %}
+                <div class="col-md-6">
+                  <label for="city" class="form-label">City</label>
+                  <input type="text" class="form-control" id="city" name="city" value="{{ user.city }}">
+                </div>
+                <div class="col-md-4">
+                  <label for="state" class="form-label">State</label>
+                  <select id="state" name="state" class="form-select">
+                    <option>Choose...</option>
+                    {% for state in states %}
+                      <option 
+                        id="{{ state }}" 
+                        {% if user.state == state %}selected{% endif %}
+                      >
+                        {{ state }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label for="zipcode" class="form-label">Zipcode</label>
+                  <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{ user.zipcode }}">
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="list-password">
+          <div class="card mb-4">
+            <div class="card-header">Update Password</div>
+            <div class="card-body">
+              <form class="row" action="/update/{{ user.user_id }}" method="POST">
+                <div class="col-12 mb-3">
+                  <label for="password" class="form-label">New Password</label>
+                  <input type="password" class="form-control" id="password" name="password">
+                </div>
+                <div class="col-12 mb-3">
+                  <label for="confirm-password" class="form-label">Confirm New Password</label>
+                  <input type="password" class="form-control" id="confirm-password" name="confirm-password">
+                </div>
+                <div class="col-12 mb-3">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="lists" role="tabpanel" aria-labelledby="list-favorite-lists">
+          <div class="card mb-4">
+            <div class="card-header">My Lists</div>
+            <div class="card-body">
+              {% if user.favorites_lists %}
+                <ul>
+                  {% for list in user.favorites_lists %}
+                    <li><a href="/users/{{ user.user_id }}/lists/{{ list.list_id }}">{{ list.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p>You have not created a list yet.</p>
+              {% endif %}
+              <div id="new-list-container">
+                <div id="new-list-form"></div>
+                <button type="button" class="btn btn-primary" id="create-list-btn">New List</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+{% endblock %}
 
-  <div class="row">
-    <h2>My Lists</h2>
-    <ul>
-      {% for list in user.favorites_lists %}
-        <li><a href="/users/<user_id>/lists/{{ list.list_id }}">{{ list.name }}</a></li>
-      {% endfor %}
-    </ul>
-  </div>
-
+{% block after_body %}
+  <script src="/static/js/account.js"></script>
 {% endblock %}

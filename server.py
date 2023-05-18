@@ -3,7 +3,7 @@
 from flask import Flask, render_template, request, flash, session, redirect
 from model import connect_to_db, db
 from jinja2 import StrictUndefined
-from utils import STATES, is_logged_in
+import utils
 import crud
 
 app = Flask(__name__)
@@ -15,7 +15,7 @@ app.app_context().push()
 def show_homepage():
     """View homepage."""
 
-    return render_template("homepage.html", user=is_logged_in())
+    return render_template("homepage.html", user=utils.is_logged_in())
 
 @app.route("/login")
 def show_login():
@@ -46,7 +46,7 @@ def handle_login():
 def show_signup():
     """View sign up page."""
 
-    return render_template("signup.html", states=STATES)
+    return render_template("signup.html", states=utils.STATES)
 
 @app.route("/signup", methods=["POST"])
 def create_account():
@@ -98,7 +98,7 @@ def show_users():
 
     users = crud.get_users()
 
-    return render_template("all_users.html", users=users, user=is_logged_in())
+    return render_template("all_users.html", users=users, user=utils.is_logged_in())
 
 @app.route("/users/<user_id>")
 def show_user_profile(user_id):
@@ -108,7 +108,7 @@ def show_user_profile(user_id):
 
     # Can only access the logged-in user's profile
     if "user" in session and user.email == session["user"]:
-        return render_template("profile.html", user=user)
+        return render_template("profile.html", user=user, states=utils.STATES)
     else:
         return redirect("/")
 
@@ -118,7 +118,7 @@ def show_restaurants():
 
     restaurants = crud.get_restaurants()
 
-    return render_template("all_restaurants.html", restaurants=restaurants, user=is_logged_in())
+    return render_template("all_restaurants.html", restaurants=restaurants, user=utils.is_logged_in())
 
 @app.route("/restaurants/<restaurant_id>")
 def show_restaurant(restaurant_id):
@@ -129,7 +129,7 @@ def show_restaurant(restaurant_id):
     images = restaurant.images
 
     return render_template("restaurant_details.html", restaurant=restaurant, 
-                        yelp_reviews=yelp_reviews, images=images, user=is_logged_in())
+                           yelp_reviews=yelp_reviews, images=images, user=utils.is_logged_in())
 
 @app.route("/search")
 def search_restaurants():
@@ -141,7 +141,7 @@ def search_restaurants():
     restaurants = crud.get_restaurants_by_term_location(query, location)
 
     return render_template("searched_restaurants.html", restaurants=restaurants, 
-                           location=location, user=is_logged_in())
+                           location=location, user=utils.is_logged_in())
 
 if __name__ == "__main__":
     connect_to_db(app)
