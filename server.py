@@ -1,6 +1,6 @@
 """Server for Foodie Friend app."""
 
-from flask import Flask, render_template, request, flash, session, redirect
+from flask import Flask, render_template, request, flash, session, redirect, jsonify
 from model import connect_to_db, db
 from jinja2 import StrictUndefined
 import utils
@@ -197,6 +197,34 @@ def update_user_details(user_id):
     flash("Account details updated successfully!")
 
     return redirect(f"/users/{user_id}")
+
+@app.route("/api/save", methods=["POST"])
+def save_favorite_restaurant():
+    """Save a favorite restaurant to a user's favorites list."""
+    
+    restaurant_id = request.json.get("restaurantId")
+
+    user = crud.get_user_by_id(session["user"])
+    user_favorites_list = user.favorites_lists[0]
+    restaurant = crud.get_restaurant_by_id(restaurant_id)
+    favorite = crud.create_favorite(user, user_favorites_list, restaurant)
+
+    try:
+        db.session.add(favorite)
+        db.session.commit()    
+    except Exception as e:
+        db.session.rollback()
+        print(e)
+
+        return jsonify({
+            "success": False,
+            "status": "Error"
+        })
+
+    return jsonify({
+            "success": True,
+            "status": f"{restaurant.name} saved to {user_favorites_list.name}"
+        })
 
 if __name__ == "__main__":
     connect_to_db(app)

@@ -105,11 +105,31 @@
             <div class="card-header">My Lists</div>
             <div class="card-body">
               {% if user.favorites_lists %}
-                <ul>
+                <div class="accordion mb-4" id="favorites-accordion">
                   {% for list in user.favorites_lists %}
-                    <li><a href="/lists/{{ list.list_id }}">{{ list.name }}</a></li>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{list.list_id }}" aria-controls="{{ list.list_id }}">
+                          {{ list.name }}
+                        </button>
+                      </h2>
+                      <div id="{{ list.list_id }}" class="accordion-collapse collapse" data-bs-parent="#favorites-accordion">
+                        <div class="accordion-body">
+                          {% if list.favorites %}
+                            <div class="list-group list-group-flush">
+                              {% for favorite in list.favorites %}
+                                <a href="/restaurants/{{ favorite.restaurant.restaurant_id }}" class="list-group-item list-group-item-action">{{ favorite.restaurant.name }}</a>
+                              {% endfor %}
+                            </div>
+                          {% else %}
+                            <p>No favorites yet.</p>
+                          {% endif %}
+                        </div>
+                      </div> 
+                    </div>
+                    <!-- <li><a href="/lists/{{ list.list_id }}">{{ list.name }}</a></li> -->
                   {% endfor %}
-                </ul>
+                </div>
               {% else %}
                 <p>You have not created a list yet.</p>
               {% endif %}
