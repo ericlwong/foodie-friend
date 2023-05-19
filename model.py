@@ -155,6 +155,9 @@ class Favorite(db.Model):
     user = db.relationship("User", back_populates="favorites")
     user_favorites_list = db.relationship("UserFavoritesList", back_populates="favorites")
 
+    __table_args__ = (db.UniqueConstraint("user_id", "user_favorites_list_id", "restaurant_id", 
+                                          name="user_favorites_restaurant_idx"),)
+
     def __repr__(self):
         """Show info about user-favorited restaurant."""
 
