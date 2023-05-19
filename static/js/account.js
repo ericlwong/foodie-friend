@@ -8,3 +8,24 @@ document.querySelector('#create-list-btn').addEventListener('click', () => {
 
   document.querySelector('#create-list-btn').style.display = 'none';
 });
+
+const deleteListBtn = document.querySelector('#delete-list-btn');
+
+deleteListBtn.addEventListener('click', () => {
+  const data = {
+    listId: deleteListBtn.value,
+  };
+
+  fetch('/api/delete-list', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      document.querySelector(`#favlist-${responseJson.data.listId}`).remove();
+      alert(responseJson.status);
+    });
+});

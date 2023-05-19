@@ -226,6 +226,36 @@ def save_favorite_restaurant():
             "status": f"{restaurant.name} saved to {user_favorites_list.name}"
         })
 
+@app.route("/api/delete-list", methods=["POST"])
+def delete_user_favorites_list():
+    """Delete a particular Favorites list for a particular user."""
+
+    list_id = request.json.get("listId")
+
+    try:
+        favorites_list = crud.get_user_favorites_list_by_id(list_id)
+
+        db.session.delete(favorites_list)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+
+        print(e)
+
+        return jsonify({
+            "success": False,
+            "status": "Error. List not deleted."
+        })
+
+    return jsonify({
+        "success": True,
+        "status": f"{favorites_list.name} deleted.",
+        "data": {
+            "listId": list_id
+        }
+    })
+
+
 if __name__ == "__main__":
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)

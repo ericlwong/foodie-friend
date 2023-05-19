@@ -170,6 +170,11 @@ def create_user_favorites_list(user, name):
 
     return favorites_list
 
+def get_user_favorites_list_by_id(list_id):
+    """Get a User Favorites List by id."""
+
+    return UserFavoritesList.query.get(list_id)
+
 def create_favorite(user, user_favorites_list, restaurant):
     """Create and return a new Favorite."""
 

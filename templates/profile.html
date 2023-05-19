@@ -107,7 +107,7 @@
               {% if user.favorites_lists %}
                 <div class="accordion mb-4" id="favorites-accordion">
                   {% for list in user.favorites_lists %}
-                    <div class="accordion-item">
+                    <div class="accordion-item" id="favlist-{{ list.list_id }}">
                       <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{list.list_id }}" aria-controls="{{ list.list_id }}">
                           {{ list.name }}
@@ -124,6 +124,10 @@
                           {% else %}
                             <p>No favorites yet.</p>
                           {% endif %}
+                          <hr>
+                          <div class="d-flex flex-row justify-content-end">
+                            <button type="button" id="delete-list-btn" class="btn btn-danger ms-auto" value="{{ list.list_id }}">Delete List</button>
+                          </div>
                         </div>
                       </div> 
                     </div>
