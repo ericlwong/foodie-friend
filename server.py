@@ -75,7 +75,7 @@ def create_account():
         db.session.add(new_user)
         db.session.commit()
 
-        session["user"] = user
+        session["user"] = new_user.user_id
         flash("Account created and logged in!")
 
         return redirect("/")
@@ -204,14 +204,14 @@ def save_favorite_restaurant():
     
     restaurant_id = request.json.get("restaurantId")
 
-    user = crud.get_user_by_id(session["user"])
-    user_favorites_list = user.favorites_lists[0]
-    restaurant = crud.get_restaurant_by_id(restaurant_id)
-    favorite = crud.create_favorite(user, user_favorites_list, restaurant)
-
     try:
+        user = crud.get_user_by_id(session["user"])
+        user_favorites_list = user.favorites_lists[0]
+        restaurant = crud.get_restaurant_by_id(restaurant_id)
+        favorite = crud.create_favorite(user, user_favorites_list, restaurant)
+
         db.session.add(favorite)
-        db.session.commit()    
+        db.session.commit() 
     except Exception as e:
         db.session.rollback()
         print(e)
@@ -219,8 +219,8 @@ def save_favorite_restaurant():
         return jsonify({
             "success": False,
             "status": "Error"
-        })
-
+        }) 
+    
     return jsonify({
             "success": True,
             "status": f"{restaurant.name} saved to {user_favorites_list.name}"
