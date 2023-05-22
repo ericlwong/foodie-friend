@@ -9,14 +9,40 @@ document.querySelector('#create-list-btn').addEventListener('click', () => {
   document.querySelector('#create-list-btn').style.display = 'none';
 });
 
-const deleteListBtn = document.querySelector('#delete-list-btn');
+const deleteListBtns = document.querySelectorAll('#delete-list-btn');
 
-deleteListBtn.addEventListener('click', () => {
+deleteListBtns.forEach(deleteListBtn => {
+  deleteListBtn.addEventListener('click', () => {
+    const data = {
+      listId: deleteListBtn.value,
+    };
+  
+    fetch('/api/delete-list', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        document.querySelector(`#favlist-${responseJson.data.listId}`).remove();
+        alert(responseJson.status);
+      });
+  });
+})
+
+let favoriteBtnId = null;
+document.querySelector('#delete-modal').addEventListener('show.bs.modal', (evt) => {
+  favoriteBtnId = evt.relatedTarget.dataset.favoriteId;
+});
+
+document.querySelector('#confirm-delete-btn').addEventListener('click', () => {
   const data = {
-    listId: deleteListBtn.value,
+    favoriteId: favoriteBtnId,
   };
 
-  fetch('/api/delete-list', {
+  fetch('/api/delete-favorite', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -25,7 +51,10 @@ deleteListBtn.addEventListener('click', () => {
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      document.querySelector(`#favlist-${responseJson.data.listId}`).remove();
+      document.querySelector(`#favorite-${responseJson.data.favoriteId}`).parentElement.parentElement.remove();
+      bootstrap.Modal.getInstance(document.querySelector('#delete-modal')).hide();
       alert(responseJson.status);
     });
 });
+
+

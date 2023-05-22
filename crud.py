@@ -184,6 +184,10 @@ def create_favorite(user, user_favorites_list, restaurant):
     
     return favorite
 
+def get_favorite_by_id(favorite_id):
+    """Get a Favorite by id."""
+
+    return Favorite.query.get(favorite_id)
 
 if __name__ == "__main__":
     from server import app

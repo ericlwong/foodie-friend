@@ -17,8 +17,6 @@ saveButton.addEventListener('click', (evt) => {
     .then((response) => response.json())
     .then((responseJson) => {
       alert(responseJson.status);
+      bootstrap.Modal.getInstance(document.querySelector('#favorites-modal')).hide();
     });
-
-  document.querySelector('.modal-backdrop').style.display = 'none';
-  document.querySelector('#favorites-modal').style.display = 'none';
 });
