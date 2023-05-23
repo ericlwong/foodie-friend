@@ -282,6 +282,33 @@ def delete_favorite_restaurant():
         }
     })
 
+@app.route("/api/restaurants", methods=["POST"])
+def get_restaurant_information():
+    """Get searched restaurants' information."""
+
+    restaurant_locations = []
+    restaurants = request.json.get("restaurants")
+
+    for restaurant in restaurants:
+        restaurant = crud.get_restaurant_by_id(restaurant["restaurantId"])
+
+        restaurant_info = {
+            "name": restaurant.name,
+            "rating": restaurant.rating,
+            "address": {
+                "street": restaurant.street_address,
+                "city": restaurant.city,
+                "state": restaurant.state,
+                "zipcode": restaurant.zipcode
+            },
+            "latitude": restaurant.latitude,
+            "longitude": restaurant.longitude
+        }
+
+        restaurant_locations.append(restaurant_info)
+
+    return jsonify(restaurant_locations)
+
 if __name__ == "__main__":
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)

@@ -3,15 +3,31 @@
 {% block title %}Restaurants Results in {{ location }}{% endblock %}
 
 {% block body %}
-  <h1>All Restaurants</h1>
+  <div class="row">
+    <h1>All Restaurants</h1>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-5">
+      <ul>
+        {% for restaurant in restaurants %}
+          <li>
+            <a class="restaurant" href="/restaurants/{{ restaurant.restaurant_id }}" data-restaurant-id="{{ restaurant.restaurant_id }}">
+              {{ restaurant.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-md-7" style="height: 800px;">
+      <div class="w-100 h-100" id="map"></div>
+    </div>
+  </div>
+{% endblock %}
 
-  <ul>
-    {% for restaurant in restaurants %}
-      <li>
-        <a href="/restaurants/{{ restaurant.restaurant_id }}">
-          {{ restaurant.name }}
-        </a>
-      </li>
-    {% endfor %}
-  </ul> 
+{% block after_body %}
+  <script src="/static/js/restaurantMap.js"></script>
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7puXA88N8fGvbCsZsLU4mlwxf1dFtJKY&callback=initMap">
+</script>
 {% endblock %}
