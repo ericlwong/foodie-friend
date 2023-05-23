@@ -42,7 +42,7 @@ for business in businesses:
     state = business["location"]["state"]
     zipcode = business["location"]["zip_code"]
     latitude = business["coordinates"]["latitude"]
-    longitude = business["coordinates"]["latitude"]
+    longitude = business["coordinates"]["longitude"]
     phone_number = business["phone"]
 
     categories = { "restaurants": "Restaurants" }
