@@ -155,7 +155,7 @@ def search_restaurants():
 
     restaurants = crud.get_restaurants_by_term_location(query, location)
 
-    return render_template("searched_restaurants.html", restaurants=restaurants, 
+    return render_template("searched_restaurants.html", query=query, restaurants=restaurants, 
                            location=location, user=utils.is_logged_in())
 
 @app.route("/update/<user_id>", methods=["POST"])
@@ -293,6 +293,7 @@ def get_restaurant_information():
         restaurant = crud.get_restaurant_by_id(restaurant["restaurantId"])
 
         restaurant_info = {
+            "restaurantId": restaurant.restaurant_id,
             "name": restaurant.name,
             "rating": restaurant.rating,
             "address": {

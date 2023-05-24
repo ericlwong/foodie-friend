@@ -4,18 +4,23 @@
 
 {% block body %}
   <div class="row">
-    <h1>All Restaurants</h1>
+    <h1>
+      {%if query %} 
+        Results for {{ query }} 
+      {% else %} 
+        Restaurants 
+      {% endif %} 
+      in {{ location }}
+    </h1>
   </div>
   
   <div class="row">
     <div class="col-md-5">
-      <ul>
+      <ul class="list-group list-group-flush">
         {% for restaurant in restaurants %}
-          <li>
-            <a class="restaurant" href="/restaurants/{{ restaurant.restaurant_id }}" data-restaurant-id="{{ restaurant.restaurant_id }}">
-              {{ restaurant.name }}
-            </a>
-          </li>
+          <a id="{{ restaurant.restaurant_id }}" class="restaurant list-group-item list-group-item-action" href="/restaurants/{{ restaurant.restaurant_id }}" data-restaurant-id="{{ restaurant.restaurant_id }}">
+            {{ restaurant.name }}
+          </a>
         {% endfor %}
       </ul>
     </div>

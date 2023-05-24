@@ -1,6 +1,7 @@
 function initMap() {
   const bounds = new google.maps.LatLngBounds();
   const restaurantInfo = new google.maps.InfoWindow();
+  const restaurantMarkers = {};
 
   // Data to send in payload for AJAX
   const data = { restaurants: [], };
@@ -26,12 +27,17 @@ function initMap() {
           position: new google.maps.LatLng(restaurant.latitude, restaurant.longitude),
           title: restaurant.name,
           map: map,
+          restaurantId: restaurant.restaurantId,
         });
 
         bounds.extend(marker.position);
 
         const restaurantInfoContent = `
-          <h5>${marker.title}</h5>
+          <h5>
+            <a href="/restaurants/${restaurant.restaurantId}" class="link-dark link-underline-dark link-underline-opacity-0 link-underline-opacity-75-hover">
+              ${marker.title}
+            </a>
+          </h5>
           <p>Rating: ${restaurant.rating}</p>
           <p class="mb-0">${restaurant.address.street}</p>
           <p>
@@ -43,6 +49,14 @@ function initMap() {
           restaurantInfo.close();
           restaurantInfo.setContent(restaurantInfoContent);
           restaurantInfo.open(map, marker);
+        });
+
+        marker.addListener('mouseover', () => {
+          document.getElementById(`${marker.restaurantId}`).style.backgroundColor = '#f8f9fa';
+        });
+
+        marker.addListener('mouseout', () => {
+          document.getElementById(`${marker.restaurantId}`).removeAttribute('style');
         });
 
         map.fitBounds(bounds);
