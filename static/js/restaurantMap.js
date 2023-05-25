@@ -58,6 +58,8 @@ function initMap() {
         marker.addListener('mouseout', () => {
           document.getElementById(`${marker.restaurantId}`).removeAttribute('style');
         });
+ 
+        restaurantMarkers[restaurant.restaurantId] = marker;
 
         map.fitBounds(bounds);
         map.panToBounds(bounds);
@@ -65,6 +67,16 @@ function initMap() {
         map.addListener('click', () => {
           if (restaurantInfo) restaurantInfo.close();
         });
+      });
+
+      document.querySelectorAll('.restaurant').forEach((restaurant) => {
+        restaurant.addEventListener('mouseover', () => {
+          restaurantMarkers[restaurant.dataset.restaurantId].setAnimation(google.maps.Animation.BOUNCE);
+        });
+
+        restaurant.addEventListener('mouseout', () => {
+          restaurantMarkers[restaurant.dataset.restaurantId].setAnimation();
+        })
       });
     });
 }
