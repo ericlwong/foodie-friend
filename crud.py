@@ -155,6 +155,11 @@ def create_user_review(user, restaurant, body, rating):
     
     return user_review
 
+def get_user_review_by_id(user_review_id):
+    """Get a User Review by id."""
+
+    return UserReview.query.get(user_review_id)
+
 def create_image(restaurant, img_url):
     """Create and return a new Image."""
 

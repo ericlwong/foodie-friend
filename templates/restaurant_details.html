@@ -7,47 +7,51 @@
     <div class="col-6">
       <h1>{{ restaurant.name }}</h1>
     </div>
-    <div class="col-6 d-flex justify-content-end">
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#favorites-modal">
-        Favorite
-      </button>
-    </div>
+    {% if "user" in session %}
+      <div class="col-6 d-flex justify-content-end">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#favorites-modal">
+          Favorite
+        </button>
+      </div>
+    {% endif %}
   </div>
 
-  <div class="modal fade" id="favorites-modal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Save to a Favorites List</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          {% if user.favorites_lists %}
-            <p>Choose one of your Favorites lists to save to:</p>
-            <form>
-              <select id="favorite-list" class="form-select mb-4">
-                <option selected>Choose a list...</option>
-                {% for list in user.favorites_lists %}
-                  <option value="{{ list.list_id }}">{{ list.name }}</option>
-                {% endfor %}
-              </select>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="save" value="{{ restaurant.restaurant_id }}">
-                  Save
-                </button>
-              </div>
-            </form>
-          {% else %}
-            <p>You do not have any Favorites lists yet.</p>
-            <a href="/users/{{ user.user_id }}">
-              Go to your profile to create one.
-            </a>
-          {% endif %}
+  {% if "user" in session %}
+    <div class="modal fade" id="favorites-modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Save to a Favorites List</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {% if user.favorites_lists %}
+              <p>Choose one of your Favorites lists to save to:</p>
+              <form>
+                <select id="favorite-list" class="form-select mb-4">
+                  <option selected>Choose a list...</option>
+                  {% for list in user.favorites_lists %}
+                    <option value="{{ list.list_id }}">{{ list.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" id="save" value="{{ restaurant.restaurant_id }}">
+                    Save
+                  </button>
+                </div>
+              </form>
+            {% else %}
+              <p>You do not have any Favorites lists yet.</p>
+              <a href="/users/{{ user.user_id }}">
+                Go to your profile to create one.
+              </a>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  {% endif %}
   
   <div class="row">
     <p>
@@ -106,7 +110,7 @@
   </div>
 
   <div class="row">
-    <h2>{{ restaurant.name }} - Reviews</h2>
+    <h2>{{ restaurant.name }} - Yelp Reviews</h2>
   </div>
   
   <div class="row">
@@ -124,8 +128,36 @@
       {% endfor %}
     </ul>
   </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h2>{{ restaurant.name }} - User Reviews</h2>
+      {% if "user" in session %}
+        <form action="/write-review">
+          <button type="submit" class="btn btn-primary" name="restaurant" value="{{ restaurant.restaurant_id }}">Leave a Review</button>
+        </form>
+      {% endif %}
+    </div>
+    <div class="col-12">
+      <ul>
+        {% for user_review in user_reviews %}
+        <li>
+          <p>{{ user_review.user.fname }} {{ user_review.user.lname[0] }}.</p>
+          <p>Rating: {{ user_review.rating }}</p>
+          <p>
+            {{ user_review.body }}
+          </p>
+          {% if "user" in session and user.user_id == user_review.user_id %}
+            <button id="delete-review-btn" name="delete" type="button" class="btn btn-danger" value="{{ user_review.user_review_id }}">Remove Review</button>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 {% endblock %}
 
 {% block after_body %}
   <script src="/static/js/favorite.js"></script>
+  <script src="/static/js/review.js"></script>
 {% endblock %}

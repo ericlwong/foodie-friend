@@ -141,10 +141,11 @@ def show_restaurant(restaurant_id):
 
     restaurant = crud.get_restaurant_by_id(restaurant_id)
     yelp_reviews = restaurant.yelp_reviews
+    user_reviews = restaurant.user_reviews
     images = restaurant.images
 
-    return render_template("restaurant_details.html", restaurant=restaurant, 
-                           yelp_reviews=yelp_reviews, images=images, user=utils.is_logged_in())
+    return render_template("restaurant_details.html", restaurant=restaurant, yelp_reviews=yelp_reviews, 
+                           user_reviews=user_reviews, images=images, user=utils.is_logged_in())
 
 @app.route("/search")
 def search_restaurants():
@@ -157,6 +158,46 @@ def search_restaurants():
 
     return render_template("searched_restaurants.html", query=query, restaurants=restaurants, 
                            location=location, user=utils.is_logged_in())
+
+@app.route("/write-review")
+def show_review_form():
+    """View Review Form page."""
+
+    restaurant_id = request.args.get("restaurant")
+    restaurant = crud.get_restaurant_by_id(restaurant_id)
+
+    return render_template("write_review.html", restaurant=restaurant, user=utils.is_logged_in())
+
+@app.route("/write-review", methods=["POST"])
+def create_review():
+    """Create a User Review for a particular restaurant."""
+
+    if "user" in session:
+        restaurant_id = request.form.get("restaurant")
+        rating = request.form.get("rating")
+        review = request.form.get("review")
+        print(f"Restaurant ID: {restaurant_id}")
+        print(f"Rating: {rating}")
+        print(f"Review: {review}")
+
+        try:
+            user = crud.get_user_by_id(session["user"])
+            restaurant = crud.get_restaurant_by_id(restaurant_id)
+            review = crud.create_user_review(user, restaurant, review, rating)
+
+            db.session.add(review)
+            db.session.commit() 
+
+            flash(f"You have successfully left a review for {restaurant.name}!")
+        except Exception as e:
+            db.session.rollback()
+            print(e)
+
+        return redirect(f"/restaurants/{restaurant_id}")
+    else:
+        flash("Please log in before leaving a review.")
+
+        return redirect("/")
 
 @app.route("/update/<user_id>", methods=["POST"])
 def update_user_details(user_id):
@@ -280,6 +321,31 @@ def delete_favorite_restaurant():
         "data": {
             "favoriteId": favorite_id
         }
+    })
+
+@app.route("/api/delete-review", methods=["POST"])
+def delete_user_review():
+    """Delete a User Review from a particular restaurant."""
+
+    user_review_id = request.json.get("userReviewId")
+
+    try:
+        user_review = crud.get_user_review_by_id(user_review_id)
+
+        db.session.delete(user_review)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(e)
+
+        return jsonify({
+            "success": False,
+            "status": "User Favorite not deleted."
+        })
+
+    return jsonify({
+        "success": True,
+        "status": "User Review deleted successfully."
     })
 
 @app.route("/api/restaurants", methods=["POST"])
