@@ -139,19 +139,19 @@ def get_restaurants_by_term_location(search_term, location):
     #                                 )    
     return restaurants
 
-def create_yelp_review(restaurant, body, rating, review_url):
+def create_yelp_review(restaurant, body, rating, review_url, created_at):
     """Create and return a new Yelp Review."""
 
-    yelp_review = YelpReview(restaurant=restaurant, body=body, 
-                             rating=rating, review_url=review_url)
+    yelp_review = YelpReview(restaurant=restaurant, body=body, rating=rating, 
+                             review_url=review_url, created_at=created_at)
     
     return yelp_review
 
 def create_user_review(user, restaurant, body, rating):
     """Create and return a new User Review."""
 
-    user_review = UserReview(user=user, restaurant=restaurant, 
-                             body=body, rating=rating)
+    user_review = UserReview(user=user, restaurant=restaurant, body=body, 
+                             rating=rating, created_at=datetime.now())
     
     return user_review
 

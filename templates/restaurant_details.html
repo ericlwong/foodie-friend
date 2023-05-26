@@ -118,6 +118,7 @@
       {% for yelp_review in yelp_reviews %}
         <li>
           <p>Rating: {{ yelp_review.rating }}</p>
+          <p>{{ yelp_review.created_at }}</p>
           <p>
             {{ yelp_review.body }}
           </p>
@@ -144,6 +145,7 @@
         <li>
           <p>{{ user_review.user.fname }} {{ user_review.user.lname[0] }}.</p>
           <p>Rating: {{ user_review.rating }}</p>
+          <p>{{ user_review.created_at }}</p>
           <p>
             {{ user_review.body }}
           </p>

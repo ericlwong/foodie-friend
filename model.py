@@ -74,6 +74,7 @@ class YelpReview(db.Model):
     body = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     review_url = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
 
     restaurant = db.relationship("Restaurant", back_populates="yelp_reviews")
 
@@ -93,6 +94,7 @@ class UserReview(db.Model):
     restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"), nullable=False)
     body = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
 
     restaurant = db.relationship("Restaurant", back_populates="user_reviews")
     user = db.relationship("User", back_populates="user_reviews")

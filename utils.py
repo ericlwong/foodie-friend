@@ -56,3 +56,8 @@ def is_logged_in():
         return crud.get_user_by_id(session["user"])
     else:
         return None
+    
+def convert_yelp_time_to_datetime(yelp_time_str):
+    """Convert a Yelp Review's time string to a datetime object."""
+    # 2016-08-29 00:41:13
+    return datetime.strptime(yelp_time_str, "%Y-%m-%d %H:%M:%S") 
