@@ -17,6 +17,10 @@ def show_homepage():
 
     return render_template("homepage.html", user=utils.is_logged_in())
 
+@app.route("/test")
+def test_react():
+    return render_template("index.html")
+
 @app.route("/login")
 def show_login():
     """View login page."""
@@ -375,6 +379,27 @@ def get_restaurant_information():
         restaurant_locations.append(restaurant_info)
 
     return jsonify(restaurant_locations)
+
+@app.route("/api/user")
+def check_login_status():
+    """Check if user is logged in and return user information."""
+
+    user = utils.is_logged_in()
+
+    response = {
+        "success": True,
+        "status": "",
+        "user": {}
+    }
+
+    if user:
+        response["status"] = "User is logged in!"
+        response["user"]["firstName"] = user.fname
+        response["user"]["lastName"] = user.lname
+    else:
+        response["status"] = "User is not logged in!"
+
+    return jsonify(response)
 
 if __name__ == "__main__":
     connect_to_db(app)
