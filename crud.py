@@ -95,8 +95,8 @@ def set_update_at_time(user):
 
     user.updated_at = datetime.now()
 
-def create_restaurant(name, rating, street_address, city, state, 
-                      zipcode, latitude, longitude, categories,
+def create_restaurant(name, rating, street_address, city, state, zipcode, 
+                      latitude, longitude, categories, yelp_business_id, 
                       phone_number=None, business_hours=None):
     """Create and return a new Restaurant."""
 
@@ -110,6 +110,7 @@ def create_restaurant(name, rating, street_address, city, state,
                     latitude=latitude,
                     longitude=longitude, 
                     categories=categories,
+                    yelp_business_id=yelp_business_id,
                     phone_number=phone_number, 
                     business_hours=business_hours)
     
@@ -138,6 +139,11 @@ def get_restaurants_by_term_location(search_term, location):
     #         matched_restaurants.add(restaurant
     #                                 )    
     return restaurants
+
+def get_restaurant_by_yelp_business_id(yelp_business_id):
+    """Get a restaurant by Yelp Business ID."""
+
+    return Restaurant.query.filter(Restaurant.yelp_business_id == yelp_business_id).first()
 
 def create_yelp_review(restaurant, body, rating, review_url, created_at):
     """Create and return a new Yelp Review."""

@@ -52,6 +52,7 @@ class Restaurant(db.Model):
     phone_number = db.Column(db.String(12), nullable=True)
     business_hours = db.Column(mutable_json_type(dbtype=JSONB, nested=True), nullable=True)
     categories = db.Column(mutable_json_type(dbtype=JSONB, nested=True), nullable=False)
+    yelp_business_id = db.Column(db.String, nullable=False)
 
     yelp_reviews = db.relationship("YelpReview", back_populates="restaurant")
     user_reviews = db.relationship("UserReview", back_populates="restaurant")

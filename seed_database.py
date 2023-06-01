@@ -57,7 +57,7 @@ for business in businesses:
     images = business_data["photos"]
 
     restaurant = crud.create_restaurant(name, rating, street_address, city, state, zipcode, latitude, 
-                                        longitude, categories, phone_number, business_hours)
+                                        longitude, categories, business_id, phone_number, business_hours)
     restaurants_in_db.append(restaurant)
 
     model.db.session.add(restaurant)

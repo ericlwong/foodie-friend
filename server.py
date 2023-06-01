@@ -156,6 +156,10 @@ def search_restaurants():
 
     restaurants = crud.get_restaurants_by_term_location(query, location)
 
+    # If matched restaurants in DB is less than 10, call Yelp's API for more
+    if len(restaurants) < 10:
+        restaurants.extend(utils.search_yelp_restaurants(query, location))
+
     return render_template("searched_restaurants.html", query=query, restaurants=restaurants, 
                            location=location, user=utils.is_logged_in())
 
