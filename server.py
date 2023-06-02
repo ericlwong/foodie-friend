@@ -243,6 +243,14 @@ def update_user_details(user_id):
 
     return redirect(f"/users/{user_id}")
 
+@app.route("/map/<restaurant_id>")
+def show_directions_to_restaurant(restaurant_id):
+    """View directions to a particular restaurant."""
+
+    restaurant = crud.get_restaurant_by_id(restaurant_id)
+
+    return render_template("map_directions.html", user=utils.is_logged_in(), restaurant=restaurant)
+
 @app.route("/api/save", methods=["POST"])
 def save_favorite_restaurant():
     """Save a favorite restaurant to a user's favorites list."""

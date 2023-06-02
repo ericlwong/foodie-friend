@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/style.css">
+{% endblock %}
+
+{% block title %}Directions to {{ restaurant.name }}{% endblock %}
+
+{% block body %}
+  <div class="row mb-3">
+    <h1 class="restaurant" data-restaurant-id="{{ restaurant.restaurant_id }}">Directions to {{ restaurant.name }}</h1>
+  </div>
+  <div id="directions-control" class="row">
+    <div class="col-4" style="height: 750px;">
+      <label for="start" class="form-label fw-bold">Start From:</label>
+      <div><b id="start-restaurant" class="fw-bolder mb-0 fs-6"></b></div>
+      <input type="text" class="form-control mb-3" id="start" name="start">
+      <label for="end" class="form-label fw-bold">To:</label>
+      <div><p id="end-restaurant" class="fw-bolder mb-0 fs-6">{{ restaurant.name }}</p></div>
+      <input type="text" readonly class="form-control-plaintext mb-3" id="end" name="end" value="{{ restaurant.street_address }}, {{ restaurant.city }}, {{ restaurant.state }} {{ restaurant.zipcode }}">
+      <div class="d-flex justify-content-between mb-2">
+        <button type="button" id="directions-btn" class="btn btn-primary btn-sm">Get Directions</button>
+        <button type="button" id="swap-btn" class="btn btn-link btn-sm link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Swap start/to</button>
+      </div>
+      <hr class="mb-2">
+      <div class="overflow-auto h-50" id="directions"></div>
+    </div>
+    <div class="col-8 mb-3" style="height: 750px;">
+      <div class="w-100 h-100" id="map"></div>  
+  </div>
+{% endblock %}
+
+{% block after_body %}
+  <script src="/static/js/directionsMap.js"></script>
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7puXA88N8fGvbCsZsLU4mlwxf1dFtJKY&callback=initMap">
+  </script>
+{% endblock %}

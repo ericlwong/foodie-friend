@@ -18,3 +18,22 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+#directions::-webkit-scrollbar {
+    width: 1em;
+}
+
+#directions::-webkit-scrollbar-track {
+    background: white;
+    margin-block: 0.5em;
+}
+
+#directions::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    border: .25em solid white;
+    border-radius: 100vw;
+}
+
+#directions-control::-webkit-scrollbar-thumb:hover {
+    background-color: grey;
+}
