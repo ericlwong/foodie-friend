@@ -224,12 +224,13 @@ def update_user_details(user_id):
 
     crud.set_user_email(user, email)
     
-    if new_password == confirm_password:
-        hashed_new_password = argon2.hash(new_password)
-        crud.set_user_password(user, hashed_new_password)
-    else:
-        flash("Passwords do not match. Please try again.")
-        return redirect(f"/users/{user_id}")
+    if new_password and confirm_password:
+        if new_password == confirm_password:
+            hashed_new_password = argon2.hash(new_password)
+            crud.set_user_password(user, hashed_new_password)
+        else:
+            flash("Passwords do not match. Please try again.")
+            return redirect(f"/users/{user_id}")
     
     crud.set_user_fname(user, fname)
     crud.set_user_lname(user, lname)
