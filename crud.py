@@ -133,11 +133,7 @@ def get_restaurants_by_term_location(search_term, location):
         (db.func.lower(Restaurant.city) == location.lower()) & (
         (db.func.lower(Restaurant.name).like(f"%{search_term}%".lower())) | (Restaurant.categories.has_key(search_term))
         )).all()
-
-    # for restaurant in restaurants:
-    #     if search_term in restaurant.categories:
-    #         matched_restaurants.add(restaurant
-    #                                 )    
+    
     return restaurants
 
 def get_restaurant_by_yelp_business_id(yelp_business_id):
