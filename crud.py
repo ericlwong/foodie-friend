@@ -130,8 +130,8 @@ def get_restaurants_by_term_location(search_term, location):
     """Get all restaurants best matching the search term and location."""
 
     restaurants = Restaurant.query.filter(
-        (Restaurant.city == location) & (
-        (db.func.lower(Restaurant.name).like(f"%{search_term}%")) | (Restaurant.categories.has_key(search_term))
+        (db.func.lower(Restaurant.city) == location.lower()) & (
+        (db.func.lower(Restaurant.name).like(f"%{search_term}%".lower())) | (Restaurant.categories.has_key(search_term))
         )).all()
 
     # for restaurant in restaurants:
