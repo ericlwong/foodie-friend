@@ -118,6 +118,8 @@ function initMap() {
 }
 
 function calculateRoute(directionsService, directionsRenderer, map) {
+  const selectedMode = document.getElementById('travel-mode').value;
+
   directionsService.route({
     origin: {
       query: document.getElementById('start').value,
@@ -125,7 +127,7 @@ function calculateRoute(directionsService, directionsRenderer, map) {
     destination: {
       query: document.getElementById('end').value,
     },
-    travelMode: google.maps.TravelMode.DRIVING,
+    travelMode: google.maps.TravelMode[selectedMode],
   })
     .then((response) => {
       directionsRenderer.setDirections(response);
