@@ -3,6 +3,7 @@
 from flask import Flask, render_template, request, flash, session, redirect, jsonify
 from model import connect_to_db, db
 from jinja2 import StrictUndefined
+from passlib.hash import argon2
 import utils
 import crud
 
@@ -32,7 +33,7 @@ def handle_login():
 
     user = crud.get_user_by_email(email)
 
-    if user and user.email == email and user.password == password:
+    if user and user.email == email and argon2.verify(password, user.password):
         session["user"] = user.user_id
         flash("Login successful!")
 
@@ -69,7 +70,8 @@ def create_account():
 
         return redirect("/signup")
     else:
-        new_user = crud.create_user(fname, lname, email, password, city, 
+        hashed_password = argon2.hash(password)
+        new_user = crud.create_user(fname, lname, email, hashed_password, city, 
                                 state, zipcode, address, address_2)
         
         db.session.add(new_user)
@@ -223,7 +225,8 @@ def update_user_details(user_id):
     crud.set_user_email(user, email)
     
     if new_password == confirm_password:
-        crud.set_user_password(user, new_password)
+        hashed_new_password = argon2.hash(new_password)
+        crud.set_user_password(user, hashed_new_password)
     else:
         flash("Passwords do not match. Please try again.")
         return redirect(f"/users/{user_id}")

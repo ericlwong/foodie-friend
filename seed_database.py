@@ -8,6 +8,7 @@ import model
 import server
 import utils
 from random import choice, randint
+from passlib.hash import argon2
 
 os.system("dropdb foodies")
 os.system("createdb foodies")
@@ -94,8 +95,9 @@ for n in range(10):
     lname = f"Last{n}"
     email = f"test{n}@test.com"
     password = "test"
+    hashed_password = argon2.hash(password)
 
-    user = crud.create_user(fname, lname, email, password, 
+    user = crud.create_user(fname, lname, email, hashed_password, 
                             "San Francisco", "CA", "94102", "1234 Main St.")
 
     # Create a Favorites List for each user
