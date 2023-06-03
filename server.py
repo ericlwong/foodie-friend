@@ -35,11 +35,11 @@ def handle_login():
 
     if user and user.email == email and argon2.verify(password, user.password):
         session["user"] = user.user_id
-        flash("Login successful!")
+        flash("Login successful!", "success")
 
         return redirect("/")
     else:
-        flash("Incorrect email and password. Please try again.")
+        flash("Incorrect email and password. Please try again.", "danger")
 
         return redirect("/login")
     
@@ -66,7 +66,7 @@ def create_account():
     user = crud.get_user_by_email(email)
 
     if user:
-        flash("Email already in use. Please use another one or log in with existing email.")
+        flash("Email already in use. Please use another one or log in with existing email.", "danger")
 
         return redirect("/signup")
     else:
@@ -78,7 +78,7 @@ def create_account():
         db.session.commit()
 
         session["user"] = new_user.user_id
-        flash("Account created and logged in!")
+        flash("Account created and logged in!", "success")
 
         return redirect("/")
     
@@ -88,9 +88,9 @@ def handle_logout():
 
     if "user" in session:
         del session["user"]
-        flash("Logged out successfully!") 
+        flash("Logged out successfully!", "success") 
     else:
-        flash("You are not currently logged in.")
+        flash("You are not currently logged in.", "info")
 
     return redirect("/")
 
@@ -125,7 +125,7 @@ def create_new_favorites_list(user_id):
     db.session.add(favorites_list)
     db.session.commit()
 
-    flash("A new list has been created successfully!")
+    flash("A new list has been created successfully!", "success")
 
     return redirect(f"/users/{user_id}")
 
@@ -206,14 +206,14 @@ def create_review():
             db.session.add(review)
             db.session.commit() 
 
-            flash(f"You have successfully left a review for {restaurant.name}!")
+            flash(f"You have successfully left a review for {restaurant.name}!", "success")
         except Exception as e:
             db.session.rollback()
             print(e)
 
         return redirect(f"/restaurants/{restaurant_id}")
     else:
-        flash("Please log in before leaving a review.")
+        flash("Please log in before leaving a review.", "info")
 
         return redirect("/")
 
@@ -241,7 +241,7 @@ def update_user_details(user_id):
             hashed_new_password = argon2.hash(new_password)
             crud.set_user_password(user, hashed_new_password)
         else:
-            flash("Passwords do not match. Please try again.")
+            flash("Passwords do not match. Please try again.", "danger")
             return redirect(f"/users/{user_id}")
     
     crud.set_user_fname(user, fname)
@@ -255,7 +255,7 @@ def update_user_details(user_id):
 
     db.session.commit()
 
-    flash("Account details updated successfully!")
+    flash("Account details updated successfully!", "success")
 
     return redirect(f"/users/{user_id}")
 

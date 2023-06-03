@@ -55,13 +55,12 @@
       </div>
     </nav>
 
-    {% for message in get_flashed_messages() %}
-      <p class="flash-msg">
-        {{ message }}
-      </p>
-    {% endfor %}
-
     <div class="container">
+      {% for category, message in get_flashed_messages(with_categories=true) %}
+        <p class="flash-msg alert alert-{{ category }}">
+          {{ message }}
+        </p>
+      {% endfor %}
       {% block body %}{% endblock %}
     </div> 
     
