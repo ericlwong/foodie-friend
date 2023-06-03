@@ -82,11 +82,11 @@
       <h3>Business Hours</h3>
   
       <ul>
-          {% for day in restaurant.business_hours %}
+          {% for item in restaurant.business_hours %}
             <li>  
-            <p>{{ day }}</p>
-            {% if restaurant.business_hours[day] %} 
-              {% for hours in restaurant.business_hours[day] %}
+            <p>{{ item["day"] }}</p>
+            {% if item["hours"] %} 
+              {% for hours in item["hours"] %}
                 <p>{{ hours }}</p>
               {% endfor %}
             {% else %}

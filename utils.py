@@ -36,15 +36,15 @@ def clean_business_hours(yelp_business_hours):
     if yelp_business_hours is None:
         return {}
 
-    cleaned_business_hours = {
-        "Monday": [],
-        "Tuesday": [],
-        "Wednesday": [],
-        "Thursday": [],
-        "Friday": [],
-        "Saturday": [],
-        "Sunday": []
-    }
+    cleaned_business_hours = [
+        { "day": "Monday", "hours": [] },
+        { "day": "Tuesday", "hours": [] },
+        { "day": "Wednesday", "hours": [] },
+        { "day": "Thursday", "hours": [] },
+        { "day": "Friday", "hours": [] },
+        { "day": "Saturday", "hours": [] },
+        { "day": "Sunday", "hours": [] }
+    ]
 
     week_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     open_hours_dict = yelp_business_hours[0]["open"]
@@ -54,7 +54,7 @@ def clean_business_hours(yelp_business_hours):
         start_time = convert_time_string(day["start"])
         end_time = convert_time_string(day["end"])
         
-        cleaned_business_hours[week_days[day_idx]].append(f"{start_time} - {end_time}")
+        cleaned_business_hours[day_idx]["hours"].append(f"{start_time} - {end_time}")
     
     return cleaned_business_hours
 
