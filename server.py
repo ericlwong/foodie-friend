@@ -63,6 +63,12 @@ def create_account():
     state = request.form.get("state")
     zipcode = request.form.get("zipcode")
 
+    if (not email or not password or not fname or not lname or 
+            not address or not city or not state or not zipcode):
+        flash("Please enter all required fields.", "danger")
+        
+        return redirect("/signup")
+
     user = crud.get_user_by_email(email)
 
     if user:
@@ -166,7 +172,6 @@ def search_restaurants():
     call_yelp = False
     new_query = None
     restaurants = crud.get_restaurants_by_term_location(query, city, state)
-    print(len(restaurants))
     # If matched restaurants in DB is less than 10, requery DB by category
     if len(restaurants) < 10 and len(restaurants) > 0:
         for category in restaurants[0].categories:
@@ -181,8 +186,6 @@ def search_restaurants():
             call_yelp = True
     else:
         call_yelp = True
-
-    print(call_yelp)
 
     if call_yelp:
         restaurants.extend(utils.search_yelp_restaurants(new_query, location))
