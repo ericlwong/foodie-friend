@@ -117,10 +117,15 @@
   <div class="row">
     <ul>
       {% for yelp_review in yelp_reviews %}
-        <li>
-          <p>Rating: {{ yelp_review.rating }}</p>
-          <p>{{ yelp_review.created_at }}</p>
-          <p>
+        <li class="mb-3">
+          <p>{{ yelp_review.reviewer_name }}</p>
+          <div class="d-flex">
+            <p class="me-5">Rating: {{ yelp_review.rating }}</p>
+            <p>
+              {{ yelp_review.created_at.month }}/{{ yelp_review.created_at.day }}/{{ yelp_review.created_at.year }}
+            </p>
+          </div>
+          <p class="mb-0">
             {{ yelp_review.body }}
           </p>
           <a href="{{ yelp_review.review_url }}" target="_blank" rel="noopener noreferrer">
@@ -143,10 +148,14 @@
     <div class="col-12">
       <ul>
         {% for user_review in user_reviews %}
-        <li>
+        <li class="mb-3">
           <p>{{ user_review.user.fname }} {{ user_review.user.lname[0] }}.</p>
-          <p>Rating: {{ user_review.rating }}</p>
-          <p>{{ user_review.created_at }}</p>
+          <div class="d-flex">
+            <p class="me-5">Rating: {{ user_review.rating }}</p>
+            <p>
+              {{ user_review.created_at.month }}/{{ user_review.created_at.day }}/{{ user_review.created_at.year }}
+            </p>
+          </div>
           <p>
             {{ user_review.body }}
           </p>

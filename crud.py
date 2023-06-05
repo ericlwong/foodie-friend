@@ -141,11 +141,12 @@ def get_restaurant_by_yelp_business_id(yelp_business_id):
 
     return Restaurant.query.filter(Restaurant.yelp_business_id == yelp_business_id).first()
 
-def create_yelp_review(restaurant, body, rating, review_url, created_at):
+def create_yelp_review(restaurant, reviewer_name, body, 
+                       rating, review_url, created_at):
     """Create and return a new Yelp Review."""
 
-    yelp_review = YelpReview(restaurant=restaurant, body=body, rating=rating, 
-                             review_url=review_url, created_at=created_at)
+    yelp_review = YelpReview(restaurant=restaurant, reviewer_name=reviewer_name, body=body, 
+                             rating=rating, review_url=review_url, created_at=created_at)
     
     return yelp_review
 

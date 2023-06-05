@@ -72,6 +72,7 @@ class YelpReview(db.Model):
 
     yelp_review_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"), nullable=False)
+    reviewer_name = db.Column(db.String, nullable=False)
     body = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     review_url = db.Column(db.String, nullable=False)

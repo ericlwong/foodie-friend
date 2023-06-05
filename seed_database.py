@@ -78,13 +78,15 @@ for business in businesses:
 
     # Create Yelp Reviews
     for review in reviews:
+        reviewer_name = review["user"]["name"]
         review_body = review["text"]
         rating = review["rating"]
         review_url = review["url"]
         yelp_created_date = review["time_created"]
         created_at = utils.convert_yelp_time_to_datetime(yelp_created_date)
 
-        yelp_review = crud.create_yelp_review(restaurant, review_body, rating, review_url, created_at)
+        yelp_review = crud.create_yelp_review(restaurant, reviewer_name, review_body, 
+                                              rating, review_url, created_at)
 
         model.db.session.add(yelp_review)
         model.db.session.commit()
