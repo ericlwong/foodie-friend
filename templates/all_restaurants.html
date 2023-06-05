@@ -7,15 +7,15 @@
     <h1>All Restaurants</h1>
   </div>
   
-  <div class="row">
-    <ul>
-      {% for restaurant in restaurants %}
-        <li>
-          <a href="/restaurants/{{ restaurant.restaurant_id }}">
+  <div class="row overflow-auto" style="height: 750px;">
+    <div class="col-md-5">
+      <ul class="list-group list-group-flush">
+        {% for restaurant in restaurants %}
+          <a id="{{ restaurant.restaurant_id }}" class="restaurant list-group-item list-group-item-action" href="/restaurants/{{ restaurant.restaurant_id }}" data-restaurant-id="{{ restaurant.restaurant_id }}">
             {{ restaurant.name }}
           </a>
-        </li>
-      {% endfor %}
-    </ul> 
+        {% endfor %}
+      </ul>
+    </div>
   </div>
 {% endblock %}
