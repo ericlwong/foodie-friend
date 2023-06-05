@@ -155,24 +155,37 @@ def search_restaurants():
 
     query = request.args.get("query")
     location = request.args.get("location")
+    try:
+        city, state = location.split(",")
+        city = city.strip()
+        state= state.strip()
+    except:
+        flash("Please input both a city and state. Ex: San Francisco, CA", "danger")
+        return redirect("/")
 
     call_yelp = False
-    restaurants = crud.get_restaurants_by_term_location(query, location)
-    
+    new_query = None
+    restaurants = crud.get_restaurants_by_term_location(query, city, state)
+    print(len(restaurants))
     # If matched restaurants in DB is less than 10, requery DB by category
-    if len(restaurants) < 10:
+    if len(restaurants) < 10 and len(restaurants) > 0:
         for category in restaurants[0].categories:
             if category != "restaurants":
-                for result in crud.get_restaurants_by_term_location(category, location):
+                new_query = category
+                for result in crud.get_restaurants_by_term_location(category, city, state):
                     if result not in restaurants:
                         restaurants.append(result)
                 break
         # If matched restaurants is still less than 10, call Yelp's API for more
         if len(restaurants) < 10:
             call_yelp = True
+    else:
+        call_yelp = True
+
+    print(call_yelp)
 
     if call_yelp:
-        restaurants.extend(utils.search_yelp_restaurants(query, location))
+        restaurants.extend(utils.search_yelp_restaurants(new_query, location))
 
     return render_template("searched_restaurants.html", query=query, restaurants=restaurants, 
                            location=location, user=utils.is_logged_in())
