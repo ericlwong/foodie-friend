@@ -115,25 +115,27 @@
   </div>
   
   <div class="row">
-    <ul>
-      {% for yelp_review in yelp_reviews %}
-        <li class="mb-3">
-          <p>{{ yelp_review.reviewer_name }}</p>
-          <div class="d-flex">
-            <p class="me-5">Rating: {{ yelp_review.rating }}</p>
-            <p>
-              {{ yelp_review.created_at.month }}/{{ yelp_review.created_at.day }}/{{ yelp_review.created_at.year }}
+    <div class="col-12">
+      <ul>
+        {% for yelp_review in yelp_reviews %}
+          <li class="mb-3">
+            <p>{{ yelp_review.reviewer_name }}</p>
+            <div class="d-flex">
+              <p class="me-5">Rating: {{ yelp_review.rating }}</p>
+              <p>
+                {{ yelp_review.created_at.month }}/{{ yelp_review.created_at.day }}/{{ yelp_review.created_at.year }}
+              </p>
+            </div>
+            <p class="mb-0">
+              {{ yelp_review.body }}
             </p>
-          </div>
-          <p class="mb-0">
-            {{ yelp_review.body }}
-          </p>
-          <a href="{{ yelp_review.review_url }}" target="_blank" rel="noopener noreferrer">
-            See more
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
+            <a href="{{ yelp_review.review_url }}" target="_blank" rel="noopener noreferrer">
+              See more
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
 
   <div class="row">
