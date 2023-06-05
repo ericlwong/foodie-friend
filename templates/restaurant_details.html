@@ -54,9 +54,7 @@
   {% endif %}
   
   <div class="row">
-    <p>
-      Rating: {{ restaurant.rating }}
-    </p>
+    <input type="text" class="rating mb-2" data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="xs" value="{{ restaurant.rating }}">
     <div class="col-4">
       <div class="card">
         <div class="card-header">Address</div>
@@ -121,7 +119,7 @@
           <li class="mb-3">
             <p>{{ yelp_review.reviewer_name }}</p>
             <div class="d-flex">
-              <p class="me-5">Rating: {{ yelp_review.rating }}</p>
+              <input type="text" class="rating" data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="xs" value="{{ yelp_review.rating }}">
               <p>
                 {{ yelp_review.created_at.month }}/{{ yelp_review.created_at.day }}/{{ yelp_review.created_at.year }}
               </p>
@@ -153,7 +151,7 @@
         <li class="mb-3">
           <p>{{ user_review.user.fname }} {{ user_review.user.lname[0] }}.</p>
           <div class="d-flex">
-            <p class="me-5">Rating: {{ user_review.rating }}</p>
+            <input type="text" class="rating" data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="xs" value="{{ user_review.rating }}">
             <p>
               {{ user_review.created_at.month }}/{{ user_review.created_at.day }}/{{ user_review.created_at.year }}
             </p>
