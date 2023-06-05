@@ -21,7 +21,9 @@
           <input class="form-control" id="location-input" type="text" name="location" placeholder="City, State" aria-label="Location Search" value="{% if 'user' in session %}{{ user.city }}, {{ user.state }}{% endif %}">
         </div>
         <div class="col-2">
-          <button id="search-btn" class="btn btn-primary" type="submit">Search</button>
+          <button id="search-btn" class="btn btn-primary" type="submit">
+            <i class="bi bi-search"></i>
+          </button>
         </div>
       </form>
     </div>
