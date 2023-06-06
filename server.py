@@ -185,6 +185,7 @@ def search_restaurants():
         if len(restaurants) < 10:
             call_yelp = True
     else:
+        new_query = query # Set Yelp query to be original search term
         call_yelp = True
 
     if call_yelp:
