@@ -28,7 +28,7 @@ def convert_time_string(time_str):
     """Convert and return time as 12-Hour Format."""
 
     time_12_hr = datetime.strptime(time_str, "%H%M")
-    return time_12_hr.strftime("%I:%M %p")
+    return time_12_hr.strftime("%-I:%M %p")
 
 def clean_business_hours(yelp_business_hours):
     """Clean and return dictionary of business hours."""
