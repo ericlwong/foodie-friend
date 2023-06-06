@@ -15,7 +15,7 @@
   </div>
   
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-5 col-sm-12 order-2 order-md-1">
       <ul class="list-group list-group-flush">
         {% for restaurant in restaurants %}
           <a id="{{ restaurant.restaurant_id }}" class="restaurant list-group-item list-group-item-action" href="/restaurants/{{ restaurant.restaurant_id }}" data-restaurant-id="{{ restaurant.restaurant_id }}">
@@ -24,7 +24,7 @@
         {% endfor %}
       </ul>
     </div>
-    <div class="col-md-7" style="height: 800px;">
+    <div class="col-md-7 col-sm-12 order-1 order-md-2" style="height: 800px;">
       <div class="w-100 h-100" id="map"></div>
     </div>
   </div>

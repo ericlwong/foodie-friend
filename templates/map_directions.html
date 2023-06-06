@@ -11,7 +11,7 @@
     <h1 class="restaurant" data-restaurant-id="{{ restaurant.restaurant_id }}">Directions to {{ restaurant.name }}</h1>
   </div>
   <div id="directions-control" class="row">
-    <div class="col-4" style="height: 750px;">
+    <div class="col-md-4 col-sm-12 order-2 order-md-1 mh-25" style="height:750px">
       <b>Travel Mode:</b>
       <select class="form-select" id="travel-mode">
         <option value="DRIVING">Driving</option>
@@ -32,7 +32,7 @@
       <hr class="mb-2">
       <div class="overflow-auto h-50" id="directions"></div>
     </div>
-    <div class="col-8 mb-3" style="height: 750px;">
+    <div class="col-md-8 col-sm-12 mb-3 order-1 order-md-2" style="height: 750px;">
       <div class="w-100 h-100" id="map"></div>  
   </div>
 {% endblock %}
