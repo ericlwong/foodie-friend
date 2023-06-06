@@ -3,15 +3,90 @@
 {% block title %}{{ restaurant.name }} - Details{% endblock %}
 
 {% block body %}
-  <div class="d-flex flex-row align-items-center">
-    <div class="col-6">
-      <h1>{{ restaurant.name }}</h1>
+  <div class="row row-cols-1">
+    <!-- <div class="col-6">
+      
+      
+    </div> -->
+    <div class="col-md-6 col-sm-12">
+      <div class="card border-0">
+        <div class="card-body">
+          <div class="card-title mb-0">
+            <h1>{{ restaurant.name }}</h1>
+            <input type="text" class="rating rating-loading mb-2" data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="sm" value="{{ restaurant.rating }}">
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <div class="row">
+                <p class="mb-0">
+                  {{ restaurant.street_address }}
+                </p>
+              </div>
+              <div class="row">
+                <p class="mb-0">
+                  {{ restaurant.city }}, {{ restaurant.state }} {{ restaurant.zipcode }}
+                </p>
+              </div>
+            </div>
+            <div class="col d-flex align-items-center">
+              <a class="link-dark link-underline link-underline-opacity-0" href="/map/{{ restaurant.restaurant_id}}"><i class="bi bi-map fs-6"></i></a>
+            </div>
+          </div>
+          
+          {% if restaurant.phone_number %}
+            <div class="row">
+              <div class="col">
+                <p>
+                  {{ restaurant.phone_number }}
+                </p>
+              </div>
+              <div class="col">
+                <i class="bi bi-telephone-forward fs-6"></i>
+              </div>
+            </div>
+            
+          {% endif %}
+
+          {% if "user" in session %}
+            <hr>
+            <div class="d-flex">
+              <form class="me-3" action="/write-review">
+                <button type="submit" class="btn btn-primary" name="restaurant" value="{{ restaurant.restaurant_id }}">
+                  <i class="bi bi-star"></i>
+                  Write a Review
+                </button>
+              </form>
+              <a type="button" class="btn btn-outline-dark me-3" href="/map/{{ restaurant.restaurant_id}}">Get Directions</a>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#favorites-modal">
+                <i class="bi bi-heart"></i>
+                Favorite
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
-    {% if "user" in session %}
-      <div class="col-6 d-flex justify-content-end">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#favorites-modal">
-          Favorite
-        </button>
+    {% if restaurant.business_hours %}
+      <div class="col-md-6 col-sm-12">
+        <div class="card border-0">
+          <div class="card-body">
+            <div class="card-title"><h5 class="mb-0">Business Hours</h5></div>
+            <ul class="list-group list-group-flush">
+              {% for item in restaurant.business_hours %}
+                <li class="d-flex list-group-item justify-content-between">  
+                  <p class="me-3 fw-bold mb-0">{{ item["day"] }}</p>
+                  {% if item["hours"] %} 
+                    {% for hours in item["hours"] %}
+                      <p class="fw-bold mb-0">{{ hours }}</p>
+                    {% endfor %}
+                  {% else %}
+                    <p class="fw-bold mb-0">Closed</p>
+                  {% endif %}
+                </li>
+              {% endfor %}   
+          </ul>
+          </div>
+        </div>
       </div>
     {% endif %}
   </div>
@@ -53,53 +128,6 @@
     </div>
   {% endif %}
   
-  <div class="row">
-    <input type="text" class="rating mb-2" data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="xs" value="{{ restaurant.rating }}">
-    <div class="col-4">
-      <div class="card">
-        <div class="card-header">Address</div>
-        <div class="card-body">
-          <a class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/map/{{ restaurant.restaurant_id}}">Get directions</a>
-          <p class="mb-0">
-            {{ restaurant.street_address }}
-          </p>
-          <p>
-            {{ restaurant.city }}, {{ restaurant.state }} {{ restaurant.zipcode }}
-          </p>
-        
-          {% if restaurant.phone_number %}
-            <p>
-              Phone Number: {{ restaurant.phone_number }}
-            </p>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    
-    {% if restaurant.business_hours %}
-      <h3>Business Hours</h3>
-  
-      <ul>
-          {% for item in restaurant.business_hours %}
-            <li>  
-            <p>{{ item["day"] }}</p>
-            {% if item["hours"] %} 
-              {% for hours in item["hours"] %}
-                <p>{{ hours }}</p>
-              {% endfor %}
-            {% else %}
-              <p>Closed</p>
-            {% endif %}
-            </li>
-          {% endfor %}   
-      </ul>
-    {% endif %}
-  </div>
-  
-  <div class="row">
-    <h2>{{ restaurant.name }} - Images</h2>
-  </div>
-  
   <div class="d-flex flex-row">
     {% for image in images %}
       <div class="col">
@@ -109,41 +137,55 @@
   </div>
 
   <div class="row">
-    <h2>{{ restaurant.name }} - Yelp Reviews</h2>
+    <h3>Reviews</h3>
   </div>
   
   <div class="row">
     <div class="col-12">
-      <ul>
-        {% for yelp_review in yelp_reviews %}
-          <li class="mb-3">
-            <p>{{ yelp_review.reviewer_name }}</p>
-            <div class="d-flex">
-              <input type="text" class="rating" data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="xs" value="{{ yelp_review.rating }}">
+      {% for yelp_review in yelp_reviews %}
+        <div class="card mb-2">
+          <div class="card-body">
+            <h5 class="card-title">{{ yelp_review.reviewer_name }}</h5>
+            <h6 class="card-subtitle d-flex">
+              <input type="text" class="rating rating-loading" data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="xs" value="{{ yelp_review.rating }}">
               <p>
                 {{ yelp_review.created_at.month }}/{{ yelp_review.created_at.day }}/{{ yelp_review.created_at.year }}
               </p>
+            </h6>
+            <p class="card-text">{{ yelp_review.body }}</p>
+            <div class="d-flex justify-content-between">
+              <a href="{{ yelp_review.review_url }}" target="_blank" rel="noopener noreferrer">
+                See more
+              </a>
+              <i class="bi bi-yelp text-danger fs-5"></i>
             </div>
-            <p class="mb-0">
-              {{ yelp_review.body }}
-            </p>
-            <a href="{{ yelp_review.review_url }}" target="_blank" rel="noopener noreferrer">
-              See more
-            </a>
-          </li>
+          </div>
+        </div>
+      {% endfor %}
+
+      {% for user_review in user_reviews %}
+        <div class="card mb-2">
+          <div class="card-body">
+            <h5 class="card-title">{{ user_review.user.fname }} {{ user_review.user.lname[0] }}.</h5>
+            <h6 class="card-subtitle d-flex">
+              <input type="text" class="rating rating-loading" data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="xs" value="{{ user_review.rating }}">
+              <p>
+                {{ user_review.created_at.month }}/{{ user_review.created_at.day }}/{{ user_review.created_at.year }}
+              </p>
+            </h6>
+            <p class="card-text">{{ user_review.body }}</p>
+            {% if "user" in session and user.user_id == user_review.user_id %}
+              <button id="delete-review-btn" name="delete" type="button" class="btn btn-danger" value="{{ user_review.user_review_id }}">Remove Review</button>
+            {% endif %}
+          </div>
+        </div>
         {% endfor %}
-      </ul>
     </div>
   </div>
 
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-12">
       <h2>{{ restaurant.name }} - User Reviews</h2>
-      {% if "user" in session %}
-        <form action="/write-review">
-          <button type="submit" class="btn btn-primary" name="restaurant" value="{{ restaurant.restaurant_id }}">Leave a Review</button>
-        </form>
-      {% endif %}
     </div>
     <div class="col-12">
       <ul>
@@ -151,7 +193,7 @@
         <li class="mb-3">
           <p>{{ user_review.user.fname }} {{ user_review.user.lname[0] }}.</p>
           <div class="d-flex">
-            <input type="text" class="rating" data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="xs" value="{{ user_review.rating }}">
+            <input type="text" class="rating rating-loading data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="xs" value="{{ user_review.rating }}">
             <p>
               {{ user_review.created_at.month }}/{{ user_review.created_at.day }}/{{ user_review.created_at.year }}
             </p>
@@ -166,7 +208,7 @@
         {% endfor %}
       </ul>
     </div>
-  </div>
+  </div> -->
 {% endblock %}
 
 {% block after_body %}
