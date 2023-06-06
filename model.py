@@ -42,7 +42,7 @@ class Restaurant(db.Model):
 
     restaurant_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
-    rating = db.Column(db.Integer, nullable=False)
+    rating = db.Column(db.Float, nullable=False)
     street_address = db.Column(db.String, nullable=False)
     city = db.Column(db.String, nullable=False)
     state = db.Column(db.String(2), nullable=False)
@@ -74,7 +74,7 @@ class YelpReview(db.Model):
     restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"), nullable=False)
     reviewer_name = db.Column(db.String, nullable=False)
     body = db.Column(db.Text, nullable=False)
-    rating = db.Column(db.Integer, nullable=False)
+    rating = db.Column(db.Float, nullable=False)
     review_url = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
 
@@ -95,7 +95,7 @@ class UserReview(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"), nullable=False)
     body = db.Column(db.Text, nullable=False)
-    rating = db.Column(db.Integer, nullable=False)
+    rating = db.Column(db.Float, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
 
     restaurant = db.relationship("Restaurant", back_populates="user_reviews")
