@@ -3,19 +3,21 @@
 {% block title %}All Restaurants{% endblock %}
 
 {% block body %}
-  <div class="row">
-    <h1>All Restaurants</h1>
-  </div>
-  
-  <div class="row overflow-auto" style="height: 750px;">
-    <div class="col-md-5">
-      <ul class="list-group list-group-flush">
-        {% for restaurant in restaurants %}
-          <a id="{{ restaurant.restaurant_id }}" class="restaurant list-group-item list-group-item-action" href="/restaurants/{{ restaurant.restaurant_id }}" data-restaurant-id="{{ restaurant.restaurant_id }}">
-            {{ restaurant.name }}
-          </a>
-        {% endfor %}
-      </ul>
+  <div class="row d-flex justify-content-between">
+    <div class="col-md-6">
+      <h1>All Restaurants</h1>
+      <div class="overflow-auto" style="height: 750px;">
+        <ul class="list-group list-group-flush">
+          {% for restaurant in restaurants %}
+            <a id="{{ restaurant.restaurant_id }}" class="restaurant list-group-item list-group-item-action" href="/restaurants/{{ restaurant.restaurant_id }}" data-restaurant-id="{{ restaurant.restaurant_id }}">
+              {{ restaurant.name }}
+            </a>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6 d-md-flex d-none align-items-center">
+      <img class="img-fluid" src="/static/images/restaurants-img.jpg">
     </div>
   </div>
 {% endblock %}
