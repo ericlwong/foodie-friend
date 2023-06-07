@@ -4,10 +4,6 @@
 
 {% block body %}
   <div class="row row-cols-1">
-    <!-- <div class="col-6">
-      
-      
-    </div> -->
     <div class="col-md-6 col-sm-12">
       <div class="card border-0">
         <div class="card-body">
@@ -56,7 +52,10 @@
                   Write a Review
                 </button>
               </form>
-              <a type="button" class="btn btn-outline-dark me-3" href="/map/{{ restaurant.restaurant_id}}">Get Directions</a>
+              <a type="button" class="btn btn-primary me-3" href="/map/{{ restaurant.restaurant_id}}">
+                <i class="bi bi-map"></i>
+                Get Directions
+              </a>
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#favorites-modal">
                 <i class="bi bi-heart"></i>
                 Favorite
@@ -111,8 +110,8 @@
                     <option value="{{ list.list_id }}">{{ list.name }}</option>
                   {% endfor %}
                 </select>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                <div class="modal-footer d-flex justify-content-between">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                   <button type="button" class="btn btn-primary" id="save" value="{{ restaurant.restaurant_id }}">
                     Save
                   </button>

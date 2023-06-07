@@ -51,3 +51,9 @@ nav, #navdrop, .footer {
     background: #a88d64;
     border-color: #a58c65;
 }
+
+.list-group-item.list-group-item-action:active, .list-group-item.list-group-item-action.active {
+    background: #2E2C31;
+    border-color: #2E2C31;
+}
+
