@@ -304,12 +304,12 @@ def save_favorite_restaurant():
 
         return jsonify({
             "success": False,
-            "status": "Error"
+            "status": f"{restaurant.name} has already been saved to {user_favorites_list.name}!"
         }) 
     
     return jsonify({
             "success": True,
-            "status": f"{restaurant.name} saved to {user_favorites_list.name}"
+            "status": f"{restaurant.name} saved to {user_favorites_list.name}!"
         })
 
 @app.route("/api/delete-list", methods=["POST"])

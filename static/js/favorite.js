@@ -17,7 +17,14 @@ if (saveButton !== null) {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        alert(responseJson.status);
+        document.getElementById('status').innerHTML = responseJson.status;
+
+        if (responseJson.success === true) {
+          document.getElementById('status').classList.add('alert', 'alert-success');
+        } else {
+          document.getElementById('status').classList.add('alert', 'alert-danger');
+        }
+        
         bootstrap.Modal.getInstance(document.querySelector('#favorites-modal')).hide();
       });
   });
