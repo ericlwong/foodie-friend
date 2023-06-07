@@ -1,0 +1,4 @@
+# FoodieFriend - Hackbright Final Project
+
+## Overview
+FoodieFriend is a web application that will allow users to search for and view restaurants surrounding a location of their choice by interfacing with the Yelp's Fusion API. Users will be able to view details of individual restaurants, such as ratings, images and reviews, and favorite/save them to a personal list to revisit at a later time. Furthermore, FoodieFriend implements both Google's Maps and Directions API's to display restaurant locations and allowing users to retrieve directions to any particular restaurant via multiple travel modes.
