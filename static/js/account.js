@@ -33,11 +33,11 @@ deleteListBtns.forEach(deleteListBtn => {
 })
 
 let favoriteBtnId = null;
-document.querySelector('#delete-modal').addEventListener('show.bs.modal', (evt) => {
+document.querySelector('#delete-favorite-modal').addEventListener('show.bs.modal', (evt) => {
   favoriteBtnId = evt.relatedTarget.dataset.favoriteId;
 });
 
-document.querySelector('#confirm-delete-btn').addEventListener('click', () => {
+document.querySelector('#confirm-delete-fav-btn').addEventListener('click', () => {
   const data = {
     favoriteId: favoriteBtnId,
   };
@@ -52,9 +52,48 @@ document.querySelector('#confirm-delete-btn').addEventListener('click', () => {
     .then((response) => response.json())
     .then((responseJson) => {
       document.querySelector(`#favorite-${responseJson.data.favoriteId}`).parentElement.parentElement.remove();
-      bootstrap.Modal.getInstance(document.querySelector('#delete-modal')).hide();
-      alert(responseJson.status);
+      bootstrap.Modal.getInstance(document.querySelector('#delete-favorite-modal')).hide();
+      document.getElementById('status').innerHTML = responseJson.status;
+
+      if (responseJson.success === true) {
+          document.getElementById('status').classList.add('alert', 'alert-success');
+      } else {
+        document.getElementById('status').classList.add('alert', 'alert-danger');
+      }
     });
 });
+
+let listId = null;
+document.querySelector('#delete-list-modal').addEventListener('show.bs.modal', (evt) => {
+  listId = evt.relatedTarget.value;
+  console.log(listId)
+});
+
+document.querySelector('#confirm-delete-list-btn').addEventListener('click', () => {
+  const data = {
+    listId: listId,
+  };
+
+  fetch('/api/delete-list', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      document.querySelector(`#favlist-${responseJson.data.listId}`).remove();
+      bootstrap.Modal.getInstance(document.querySelector('#delete-list-modal')).hide();
+      document.getElementById('status').innerHTML = responseJson.status;
+
+      if (responseJson.success === true) {
+          document.getElementById('status').classList.add('alert', 'alert-success');
+      } else {
+        document.getElementById('status').classList.add('alert', 'alert-danger');
+      }
+    });
+});
+
 
 
