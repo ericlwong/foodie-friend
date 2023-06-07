@@ -7,6 +7,7 @@ import os
 import requests
 import utils
 import model
+import phonenumbers
 
 STATES = {"AK": "Alaska", "AL": "Alabama", "AR": "Arkansas", "AZ": "Arizona", "CA": "California", 
           "CO": "Colorado", "CT": "Connecticut", "DE": "Delaware", "FL": "Florida", "GA": "Georgia", 
@@ -148,3 +149,11 @@ def search_yelp_restaurants(term, location):
             model.db.session.commit()
 
     return new_restaurants
+
+def format_phone_number(phone_number):
+    """Format phone numbers into U.S. format."""
+
+    return phonenumbers.format_number(
+                phonenumbers.parse(phone_number, "US"), 
+                phonenumbers.PhoneNumberFormat.NATIONAL
+            )

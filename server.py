@@ -148,12 +148,18 @@ def show_restaurant(restaurant_id):
     """View a particular restaurant."""
 
     restaurant = crud.get_restaurant_by_id(restaurant_id)
+
+    if restaurant.phone_number:
+        restaurant_phone = utils.format_phone_number(restaurant.phone_number)
+    else:
+        restaurant_phone = None
+        
     yelp_reviews = restaurant.yelp_reviews
     user_reviews = restaurant.user_reviews
     images = restaurant.images
 
-    return render_template("restaurant_details.html", restaurant=restaurant, yelp_reviews=yelp_reviews, 
-                           user_reviews=user_reviews, images=images, user=utils.is_logged_in())
+    return render_template("restaurant_details.html", restaurant=restaurant, restaurant_phone_number=restaurant_phone,
+                           yelp_reviews=yelp_reviews, user_reviews=user_reviews, images=images, user=utils.is_logged_in())
 
 @app.route("/search")
 def search_restaurants():
