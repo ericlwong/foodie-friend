@@ -48,6 +48,7 @@ function initMap() {
 
   // Data to send in payload for AJAX
   const data = { restaurants: [], };
+  const restaurantMarkers = [];
 
   const map = new google.maps.Map(document.querySelector('#map'), {
     zoom: 14,
@@ -67,7 +68,7 @@ function initMap() {
   });
 
   document.querySelector('#directions-btn').addEventListener('click', () => {
-    calculateRoute(directionsService, directionsRenderer, map);
+    calculateRoute(directionsService, directionsRenderer, map, restaurantMarkers);
   });
 
   fetch('/api/restaurants', {
@@ -87,6 +88,7 @@ function initMap() {
           restaurantId: restaurant.restaurantId,
         });
 
+        restaurantMarkers.push(marker);
         bounds.extend(marker.position);
 
         const restaurantInfoContent = `
@@ -117,8 +119,14 @@ function initMap() {
     });
 }
 
-function calculateRoute(directionsService, directionsRenderer, map) {
+function calculateRoute(directionsService, directionsRenderer, map, restaurantMarkers) {
   const selectedMode = document.getElementById('travel-mode').value;
+
+  if (document.getElementById('start').value === '' || document.getElementById('end').value === '') {
+    document.getElementById('status').innerHTML = 'Please enter a valid address.';
+    document.getElementById('status').classList.add('alert', 'alert-danger');
+    return;
+  }
 
   directionsService.route({
     origin: {
@@ -131,6 +139,12 @@ function calculateRoute(directionsService, directionsRenderer, map) {
   })
     .then((response) => {
       directionsRenderer.setDirections(response);
+      restaurantMarkers.forEach((marker) => {
+        marker.setMap(null);
+      });
       map.panTo(response.routes[0].bounds.getCenter());
+
+      document.getElementById('status').innerHTML = '';
+      document.getElementById('status').classList.remove('alert', 'alert-danger');
     });
 }
