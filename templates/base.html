@@ -23,17 +23,17 @@
   <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg mb-4">
       <div class="container-fluid">
-        <a class="navbar-brand text-white fw-medium" href="/">FoodieFriend</a>
+        <a class="navbar-brand fw-medium text-light" href="/">FoodieFriend</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="/">Home</a>
+              <a class="nav-link text-light" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/restaurants">Restaurants</a>
+              <a class="nav-link text-light" href="/restaurants">Restaurants</a>
             </li>
             <!-- <li class="nav-item">
               <a class="nav-link" href="/users">Users</a>
@@ -42,19 +42,19 @@
           <ul class="navbar-nav d-flex">
             {% if "user" not in session %}
               <li class="nav-item">
-                <a class="nav-link" href="/login">Log In</a>
+                <a class="nav-link text-light" href="/login">Log In</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/signup">Sign Up</a>
+                <a class="nav-link text-light" href="/signup">Sign Up</a>
               </li>
             {% else %}
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                   {{ user.fname }} {{ user.lname[0] }}.
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="/users/{{ user.user_id }}">My Account</a></li>
-                  <li><a class="dropdown-item" href="/logout">Log Out</a></li>
+                <ul id="navdrop" class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                  <li><a class="dropdown-item text-light" href="/users/{{ user.user_id }}">My Account</a></li>
+                  <li><a class="dropdown-item text-light" href="/logout">Log Out</a></li>
                 </ul>
               </li>
             {% endif %}
@@ -72,7 +72,7 @@
       {% block body %}{% endblock %}
     </div> 
 
-    <footer class="footer pt-2">
+    <footer class="footer mt-5 pt-2">
       <div class="text-light text-center">
         <p>&copy; 2023 by Eric Wong. All Rights Reserved.</p>
       </div>

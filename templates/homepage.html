@@ -1,20 +1,33 @@
 {% extends 'base.html' %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    body {
+      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.40), rgba(90, 90, 90, 0.1)), url("/static/images/home-bg-2.jpg");
+      background-size: cover;
+    }
+  </style>
 {% endblock %}
 
 {% block title %}Foodie Friend Home{% endblock %}
 
 {% block body %}
-  <div id="search-ctn">
-    <div class="row text-center">
-      <h1>Find your next amazing eats!</h1>
-    </div>
-    
-    <div class="d-flex justify-content-center">
-      <form class="row" action="/search">
-          <div class="col-md-6 col-sm-12 mb-2">
+  <div class="d-flex justify-content-center align-items-center" style="height: 500px;">
+    <div id="search-ctn" class="flex-fill">
+      <div class="row text-center">
+        <h1 class="text-light">Find your next amazing eats!</h1>
+      </div>
+      
+      <div class="d-flex">
+        <form class="row flex-fill justify-content-center" action="/search">
+          <div class="input-group col-12 w-75">
+            <input class="form-control" id="search-input" type="text" name="query" placeholder="Restaurants, food, etc." aria-label="Query Search">
+            <input class="form-control" id="location-input" type="text" name="location" placeholder="City, State" aria-label="Location Search" value="{% if 'user' in session %}{{ user.city }}, {{ user.state }}{% endif %}">
+            <button id="search-btn" class="btn btn-primary" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+          <!-- <div class="col-md-6 col-sm-12 mb-2">
             <input class="form-control" id="search-input" type="text" name="query" placeholder="Restaurants, food, etc." aria-label="Query Search">
           </div>
           <div class="col-md-4 col-sm-12 mb-2">
@@ -24,15 +37,15 @@
             <button id="search-btn" class="btn btn-primary" type="submit">
               <i class="bi bi-search"></i>
             </button>
-          </div>
-      </form>
+          </div> -->
+        </form>
+      </div>
     </div>
-  </div>
-  <div id="loader-ctn" class="row d-flex justify-content-center align-items-center visually-hidden">
-    <div id="loader"></div>
-    <div class="text-center mt-3">Hang tight! Looking for the best eats at the moment...</div>
-  </div>
-  
+    <div id="loader-ctn" class="row d-flex justify-content-center align-items-center visually-hidden">
+      <div id="loader"></div>
+      <div class="text-center mt-3">Hang tight! Looking for the best eats at the moment...</div>
+    </div>
+</div>
 {% endblock %}
 
 {% block after_body %}
