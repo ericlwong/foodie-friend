@@ -100,13 +100,13 @@ def handle_logout():
 
     return redirect("/")
 
-@app.route("/users")
-def show_users():
-    """View users."""
+# @app.route("/users")
+# def show_users():
+#     """View users."""
 
-    users = crud.get_users()
+#     users = crud.get_users()
 
-    return render_template("all_users.html", users=users, user=utils.is_logged_in())
+#     return render_template("all_users.html", users=users, user=utils.is_logged_in())
 
 @app.route("/users/<user_id>")
 def show_user_profile(user_id):
