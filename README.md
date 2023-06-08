@@ -4,7 +4,7 @@
 FoodieFriend is a full-stack web application that will allow users to search for and view restaurants surrounding a location of their choice by interfacing with Yelp's Fusion API. Via Yelp, users will be able to view details of individual restaurants, including rating and up to three images and reviews. For convencience, users may favorite individual restaurants to a personal list to revisit at a later time or to keep track of restaurants they enjoy. Furthermore, FoodieFriend implements both Google's Maps and Directions API's to display restaurant locations and allow users to retrieve directions to any particular restaurant with routes curated by various travel modes available.
 
 ## Technology Stack
-Python, Flask, Jinja2, PostgreSQL, SQL Alchemy, HTML, CSS, JavaScript, Bootstrap
+Python, Flask, Jinja2, PostgreSQL, SQL Alchemy, HTML, CSS, JavaScript, AJAX, Bootstrap
 
 ## APIs
 - Yelp Fusion
@@ -37,3 +37,9 @@ The restaurant's address is pre-filled and set to read-only to ensure the direct
 ### Personal lists
 ![personal-lists](https://github.com/ericlwong/foodie-friend/blob/main/static/images/screenshots/personal-lists-screen.png "Personal Lists")
 Within the user's profile page, the user will be able to create any number of lists to favorite, or save, restaurants to for viewing at a later time. As restaurants are favorited, they will appear as new list items within each list container as clickable references to their respective details pages. Furthermore, each restaurant within the list will have an accompanying delete button in the form of a trashcan icon next to them. Within each list container, there will be a delete button at the bottom. Both delete actions will trigger a pop-up modal for the user to confirm whether they indeed want to go through with the delete action. Confirming the delete actions will remove the respective item as such.
+
+## Future Roadmap
+- Inline validation on inputs (client-side/server-side TBD)
+- Further improvements for mobile responsiveness (There are still some sizing issues with smaller screens)
+- React implementation to handle redundancy and responsiveness
+- Deploy application to the cloud for practice

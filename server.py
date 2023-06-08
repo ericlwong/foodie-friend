@@ -256,6 +256,7 @@ def update_user_details(user_id):
     if (not email or not fname or not lname or 
         not address or not city or not state or not zipcode):
         flash("Please enter all required fields.", "danger")
+        
         return redirect(f"/users/{user_id}")
 
     user = crud.get_user_by_id(user_id)
@@ -300,7 +301,6 @@ def update_user_password(user_id):
     else:
         flash("Please enter a new password and confirm it before updating.", "danger")
         return redirect(f"/users/{user_id}")
-
 
 @app.route("/map/<restaurant_id>")
 def show_directions_to_restaurant(restaurant_id):
