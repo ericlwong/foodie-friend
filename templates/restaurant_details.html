@@ -19,7 +19,7 @@
       <div class="card border-0">
         <div class="card-body">
           <div class="card-title mb-0">
-            <h1>{{ restaurant.name }}</h1>
+            <h1 class="fw-bold">{{ restaurant.name }}</h1>
             <input type="text" class="rating rating-loading mb-2" data-display-only="true" data-show-clear="false" data-show-caption="false" data-size="sm" value="{{ restaurant.rating }}">
           </div>
           <div class="row mb-2">
@@ -54,25 +54,26 @@
             
           {% endif %}
 
-          {% if "user" in session %}
             <hr>
             <div class="d-flex">
-              <form class="me-3" action="/write-review">
+            {% if "user" in session %}
+              <form class="me-3" action="/write-review"> 
                 <button type="submit" class="btn btn-primary" name="restaurant" value="{{ restaurant.restaurant_id }}">
                   <i class="bi bi-star"></i>
                   Write a Review
                 </button>
               </form>
-              <a type="button" class="btn btn-primary me-3" href="/map/{{ restaurant.restaurant_id}}">
-                <i class="bi bi-map"></i>
-                Get Directions
-              </a>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#favorites-modal">
+              <button type="button" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#favorites-modal">
                 <i class="bi bi-heart"></i>
                 Favorite
               </button>
+            {% endif %}
+              <a type="button" class="btn btn-primary" href="/map/{{ restaurant.restaurant_id}}">
+                <i class="bi bi-map"></i>
+                Get Directions
+              </a>
             </div>
-          {% endif %}
+          
         </div>
       </div>
     </div>
