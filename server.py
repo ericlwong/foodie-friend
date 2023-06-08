@@ -240,13 +240,11 @@ def create_review():
 
         return redirect("/")
 
-@app.route("/update/<user_id>", methods=["POST"])
+@app.route("/update/<user_id>/details", methods=["POST"])
 def update_user_details(user_id):
     """Update account details of a particular user."""
 
     email = request.form.get("email")
-    new_password = request.form.get("password")
-    confirm_password = request.form.get("confirm-password")
     fname = request.form.get("fname")
     lname = request.form.get("lname")
     address = request.form.get("address")
@@ -255,18 +253,14 @@ def update_user_details(user_id):
     state = request.form.get("state")
     zipcode = request.form.get("zipcode")
 
+    if (not email or not fname or not lname or 
+        not address or not city or not state or not zipcode):
+        flash("Please enter all required fields.", "danger")
+        return redirect(f"/users/{user_id}")
+
     user = crud.get_user_by_id(user_id)
 
     crud.set_user_email(user, email)
-    
-    if new_password and confirm_password:
-        if new_password == confirm_password:
-            hashed_new_password = argon2.hash(new_password)
-            crud.set_user_password(user, hashed_new_password)
-        else:
-            flash("Passwords do not match. Please try again.", "danger")
-            return redirect(f"/users/{user_id}")
-    
     crud.set_user_fname(user, fname)
     crud.set_user_lname(user, lname)
     crud.set_user_address(user, address)
@@ -281,6 +275,32 @@ def update_user_details(user_id):
     flash("Account details updated successfully!", "success")
 
     return redirect(f"/users/{user_id}")
+
+@app.route("/update/<user_id>/password", methods=["POST"])
+def update_user_password(user_id):
+    """Update password of a particular user."""
+
+    new_password = request.form.get("password")
+    confirm_password = request.form.get("confirm-password")
+
+    user = crud.get_user_by_id(user_id)
+
+    if new_password and confirm_password:
+        if new_password == confirm_password:
+            hashed_new_password = argon2.hash(new_password)
+            crud.set_user_password(user, hashed_new_password)
+            db.session.commit()
+
+            flash("Your password has been updated successfully!", "success")
+
+            return redirect(f"/users/{user_id}")
+        else:
+            flash("Passwords do not match. Please try again.", "danger")
+            return redirect(f"/users/{user_id}")
+    else:
+        flash("Please enter a new password and confirm it before updating.", "danger")
+        return redirect(f"/users/{user_id}")
+
 
 @app.route("/map/<restaurant_id>")
 def show_directions_to_restaurant(restaurant_id):

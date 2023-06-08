@@ -17,7 +17,7 @@
         <div class="card-body">
           <div class="list-group" id="account-settings" role="tablist">
             <a class="list-group-item list-group-item-action active" id="list-profile" data-bs-toggle="list" href="#profile" role="tab" aria-controls="profile">My Profile</a>
-            <a class="list-group-item list-group-item-action" id="list-password" data-bs-toggle="list" href="#password" role="tab" aria-controls="password">Change Password</a>
+            <a class="list-group-item list-group-item-action" id="list-password" data-bs-toggle="list" href="#update-password" role="tab" aria-controls="password">Change Password</a>
             <a class="list-group-item list-group-item-action" id="list-favorite-lists" data-bs-toggle="list" href="#lists" role="tab" aria-controls="lists">My Lists</a>
           </div>
         </div>
@@ -29,7 +29,7 @@
           <div class="card mb-4">
             <div class="card-header">Account Details</div>
             <div class="card-body">
-              <form class="row g-3" action="/update/{{ user.user_id }}" method="POST">
+              <form class="row g-3" action="/update/{{ user.user_id }}/details" method="POST">
                 <div class="col-12">
                   <label for="email" class="form-label">Email</label>
                   <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
@@ -81,11 +81,11 @@
             </div>
           </div>
         </div>
-        <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="list-password">
+        <div class="tab-pane fade" id="update-password" role="tabpanel" aria-labelledby="list-password">
           <div class="card mb-4">
             <div class="card-header">Update Password</div>
             <div class="card-body">
-              <form class="row" action="/update/{{ user.user_id }}" method="POST">
+              <form class="row" action="/update/{{ user.user_id }}/password" method="POST">
                 <div class="col-12 mb-3">
                   <label for="password" class="form-label">New Password</label>
                   <input type="password" class="form-control" id="password" name="password">
